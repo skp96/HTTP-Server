@@ -1,21 +1,24 @@
-import java.io.*
-import java.lang.Exception
 import java.net.ServerSocket
+import java.nio.charset.Charset
+import java.util.*
 
 class Server(socket: ServerSocket) {
-    val socket = socket
+    private val socket = socket
 
     fun start() {
         println("Server is running on port ${socket.localPort}")
         val connection = socket.accept()
-        val output = PrintWriter(connection.getOutputStream(), true)
-        val input = BufferedReader(InputStreamReader(connection.inputStream))
+        val writer = connection.getOutputStream()
+        val reader = Scanner(connection.getInputStream())
 
         try {
-            while (input.readLine() != null) {
-                output.println("HTTP Server Coming Soon!")
-            }
+            val input = reader.nextLine()
+            println(input)
+            writer.write("HTTP Server Coming Soon!\n".toByteArray(Charsets.UTF_8))
+
         }catch (ex: Exception) {
+            writer.write("Something went wrong, try again later".toByteArray())
+        } finally {
             connection.close()
         }
     }
