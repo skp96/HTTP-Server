@@ -14,8 +14,8 @@ class Server(socket: ServerSocket) {
         try {
             val input = reader.nextLine()
             println(input)
+            writer.write(("HTTP/1.1 " + "200 OK\n").toByteArray(Charsets.UTF_8))
             writer.write("HTTP Server Coming Soon!\n".toByteArray(Charsets.UTF_8))
-
         }catch (ex: Exception) {
             writer.write("Something went wrong, try again later".toByteArray())
         } finally {

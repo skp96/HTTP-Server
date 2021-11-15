@@ -45,8 +45,49 @@ jobs:
       # run tests!
       - run: gradle test
 
+  VerifyServer:
+    docker:
+      - image: circleci/openjdk:8-jdk
+
+    working_directory: ~/repo
+
+    environment:
+      # Customize the JVM maximum heap limit
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: gradle dependencies
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+
+      - run:
+          name: start server
+          command: gradle run
+          background: true
+
+      - run:
+          name: sleep 15
+          command: sleep 15
+
+      - run:
+          name: verify server connection
+          command: curl http://localhost:5000
+
 workflows:
   version: 2
   build_and_test:
     jobs:
       - JUnit
+      - VerifyServer
