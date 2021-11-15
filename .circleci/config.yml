@@ -84,6 +84,10 @@ jobs:
       - run:
           name: verify server connection
           command: curl http://localhost:5000
+          
+      - run:
+          name: sleep 5
+          command: sleep 5
 
 workflows:
   version: 2
