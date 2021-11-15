@@ -1,3 +1,4 @@
+@file:JvmName("Main")
 import java.net.ServerSocket
 
 fun main() {
