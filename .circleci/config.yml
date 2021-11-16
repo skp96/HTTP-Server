@@ -143,8 +143,8 @@ jobs:
           command: rake test
 
       - run:
-          name: sleep 5
-          command: sleep 5
+          name: sleep 10
+          command: sleep 10
 
 workflows:
   version: 2
