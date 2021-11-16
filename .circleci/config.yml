@@ -103,6 +103,14 @@ jobs:
     steps:
       - checkout
 
+      - add_ssh_keys:
+          fingerprints: 
+            - "89:68:c6:d1:c1:49:db:9c:59:af:ed:41:db:9c:aa:63"
+
+      - run: git submodule sync
+
+      - run: git submodule update --init
+
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "build.gradle" }}
@@ -125,6 +133,7 @@ jobs:
           name: install http_server_spec dependencies
           working_directory: ~/repo/http_server_spec
           command: |
+            ls
             chmod +x ../dependencies.sh
             ../dependencies.sh
 
@@ -134,8 +143,8 @@ jobs:
           command: rake test
 
       - run:
-          name: sleep 5
-          command: sleep 5
+          name: sleep 10
+          command: sleep 10
 
 workflows:
   version: 2
