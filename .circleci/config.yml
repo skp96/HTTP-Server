@@ -78,8 +78,8 @@ jobs:
           background: true
 
       - run:
-          name: sleep 15
-          command: sleep 15
+          name: sleep 30
+          command: sleep 30
 
       - run:
           name: verify server connection
@@ -139,7 +139,7 @@ jobs:
       - run:
           name: run acceptance tests
           working_directory: ~/repo/http_server_spec
-          command: bundle exec spinach
+          command: bundle exec spinach --tags @simple-get
 
       - run:
           name: sleep 12

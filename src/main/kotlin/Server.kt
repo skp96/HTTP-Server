@@ -1,25 +1,39 @@
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.io.PrintWriter
 import java.net.ServerSocket
-import java.nio.charset.Charset
-import java.util.*
 
-class Server(socket: ServerSocket) {
-    private val socket = socket
+class Server(private val socket: ServerSocket) {
 
     fun start() {
-        println("Server is running on port ${socket.localPort}")
-        val connection = socket.accept()
-        val writer = connection.getOutputStream()
-        val reader = Scanner(connection.getInputStream())
+        while(true) {
+            val connection = socket.accept()
+            val writer = PrintWriter(connection.getOutputStream(), true)
+            val reader = BufferedReader(InputStreamReader(connection.getInputStream()))
+            try {
+                val clientRequest: MutableList<String> = mutableListOf()
+                while(reader.ready()) {
+                    clientRequest += reader.readLine()
+                }
 
-        try {
-            val input = reader.nextLine()
-            println(input)
-            writer.write(("HTTP/1.1 " + "200 OK\n").toByteArray(Charsets.UTF_8))
-            writer.write("HTTP Server Coming Soon!\n".toByteArray(Charsets.UTF_8))
-        }catch (ex: Exception) {
-            writer.write("Something went wrong, try again later".toByteArray())
-        } finally {
-            connection.close()
+                val requestLine: List<String> = clientRequest[0].split(" ").toList()
+                val httpMethod = requestLine[0]
+                val resource = requestLine[1]
+                println(httpMethod)
+                if (httpMethod == "GET" && (resource == "/simple_get" || resource == "/")) {
+                    writer.println("HTTP/1.1 200 OK\r\n")
+                }
+
+                if (httpMethod == "GET" && resource == "/simple_get_with_body") {
+                    writer.println("HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Length: 11\r\n" + "\r\nHello world")
+                }
+
+                connection.close()
+            } catch (e: Exception) {
+                println("Something went wrong: ${e.message}")
+            }
+
         }
+
     }
 }
