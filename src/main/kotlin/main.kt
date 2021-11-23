@@ -1,8 +1,10 @@
 @file:JvmName("Main")
 import java.net.ServerSocket
+import request.RequestParser
 
 fun main() {
-    var serverSocket: ServerSocket = ServerSocket(5000)
+    val serverSocket: ServerSocket = ServerSocket(5000)
+    val parser = RequestParser()
     println("Server is running on port ${serverSocket.localPort}")
-    Server(serverSocket).start()
+    Server(serverSocket, parser).start()
 }

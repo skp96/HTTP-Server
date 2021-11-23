@@ -1,3 +1,4 @@
+import request.RequestParser
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.PrintWriter
@@ -5,7 +6,7 @@ import java.net.CacheResponse
 import java.net.ServerSocket
 import java.net.Socket
 
-class Server(private val socket: ServerSocket) {
+class Server(private val socket: ServerSocket, private val parser: RequestParser) {
 
     fun start() {
         while(true) {
@@ -13,11 +14,11 @@ class Server(private val socket: ServerSocket) {
             try {
                 // Read from request inputstream
                 val clientRequest = readRequest(connection)
-                // Parseing request
-                val request = parseRequest(clientRequest)
+                // Parsing request
+                val request = parser.parse(clientRequest)
                 // Request
-                val httpMethod = request[0]
-                val route = request[1]
+                val httpMethod = request.httpMethod
+                val route = request.route
                 // Response from router
                 val response = router(httpMethod, route)
                 // Write to outputstream
@@ -31,12 +32,11 @@ class Server(private val socket: ServerSocket) {
             }
 
         }
-
     }
 
-    private fun readRequest(socketConnection: Socket): MutableList<String> {
+    private fun readRequest(socketConnection: Socket): String {
         val reader = BufferedReader(InputStreamReader(socketConnection.getInputStream()))
-        val clientRequest: MutableList<String> = mutableListOf()
+        var clientRequest = ""
 
         while (reader.ready()) {
             clientRequest += reader.readLine()
