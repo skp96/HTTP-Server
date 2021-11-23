@@ -14,9 +14,8 @@ class Server(private val socket: ServerSocket, private val parser: RequestParser
             try {
                 // Read from request inputstream
                 val clientRequest = readRequest(connection)
-                // Parsing request
+
                 val request = parser.parse(clientRequest)
-                // Request
                 val httpMethod = request.httpMethod
                 val route = request.route
                 // Response from router
