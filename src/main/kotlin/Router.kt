@@ -1,7 +1,9 @@
-package builder
+package router
 import controllers.Controller
 
-class RoutesBuilder(val errorController: Controller) {
+class Router(private val badRequestController: Controller,
+             private val notFoundController: Controller) {
+
     val routes: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf()
 
     fun addRoute(httpMethod: String, route: String, controller: Controller) {
@@ -10,15 +12,7 @@ class RoutesBuilder(val errorController: Controller) {
     }
 
     fun getController(httpMethod: String, route: String): Controller {
-        val httpMethodRoutes = routes.get(httpMethod)
-
-        if (httpMethodRoutes == null) {
-            return errorController
-        }
-        val controller = httpMethodRoutes[route]
-        if (controller == null) {
-            return errorController
-        }
-        return controller
+        val httpMethodRoutes = routes.get(httpMethod) ?: return badRequestController
+        return httpMethodRoutes.get(route) ?: return notFoundController
     }
 }

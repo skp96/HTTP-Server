@@ -1,14 +1,12 @@
-import builder.RoutesBuilder
-import controllers.Controller
-import controllers.SimpleGetController
-import controllers.SimpleGetWithBodyController
-import controllers.ErrorController
+import controllers.*
+import router.Router
 import kotlin.test.*
 
-class RoutesBuilderTest {
+class RouterTest {
     @Test fun testExpectAddRouteMemberToAddSimpleGetToRoutes() {
-        val errorController = ErrorController()
-        val routes = RoutesBuilder(errorController)
+        val badRequestController = BadRequestController()
+        val notFoundController = NotFoundController()
+        val routes = Router(badRequestController, notFoundController)
         val simpleGetController: Controller = SimpleGetController()
         routes.addRoute("GET", "/simple_get", simpleGetController)
         val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("GET" to mutableMapOf("/simple_get" to simpleGetController))
@@ -16,8 +14,9 @@ class RoutesBuilderTest {
     }
 
     @Test fun testExpectAddRouteMemberToAddSimpleGetBodyToRoutes() {
-        val errorController = ErrorController()
-        val routes = RoutesBuilder(errorController)
+        val badRequestController = BadRequestController()
+        val notFoundController = NotFoundController()
+        val routes = Router(badRequestController, notFoundController)
         val simpleGetWithBodyController: Controller = SimpleGetWithBodyController()
         routes.addRoute("GET", "/simple_get_with_body", simpleGetWithBodyController)
         val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("GET" to mutableMapOf("/simple_get_with_body" to simpleGetWithBodyController))
@@ -25,8 +24,9 @@ class RoutesBuilderTest {
     }
 
     @Test fun testGetControllerToReturnAControllerFromRoutes() {
-        val errorController = ErrorController()
-        val routes = RoutesBuilder(errorController)
+        val badRequestController = BadRequestController()
+        val notFoundController = NotFoundController()
+        val routes = Router(badRequestController, notFoundController)
         routes.addRoute("GET", "/simple_get_with_body", SimpleGetWithBodyController())
         val controller = routes.getController("GET", "/simple_get")
         assertIs<Controller>(controller)

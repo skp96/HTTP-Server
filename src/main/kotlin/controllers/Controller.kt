@@ -1,6 +1,7 @@
 package controllers
+import response.ResponseBuilder
 
 interface Controller {
 
-    fun generate_response(): String
+    fun action(): ResponseBuilder
 }

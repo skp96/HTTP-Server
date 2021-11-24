@@ -2,7 +2,7 @@ import kotlin.test.*
 import request.RequestParser
 import request.Request
 
-class ParserTest {
+class RequestParserTest {
     @Test fun testReturnRequestWhenSimpleGetFromClient() {
         val parser = RequestParser()
         val clientRequest = "GET /simple_get HTTP/1.1\r\n" + "Connection: close\r\n" + "Host: 127.0.0.1:5000\r\n" +
