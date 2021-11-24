@@ -9,7 +9,9 @@ import controllers.SimpleGetWithBodyController
 
 fun main() {
     val serverSocket = ServerSocket(5000)
+
     val parser = RequestParser()
+
     val badRequestController = BadRequestController()
     val notFoundController = NotFoundController()
     val router = Router(badRequestController, notFoundController)

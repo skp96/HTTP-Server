@@ -6,38 +6,46 @@ import java.io.PrintWriter
 import java.net.ServerSocket
 import java.net.Socket
 
-class Server(private val socket: ServerSocket,
+class Server(private val serverSocket: ServerSocket,
              private val parser: RequestParser,
              private val router: Router) {
 
+    lateinit private var socket: Socket
+    lateinit private var reader: BufferedReader
+    lateinit private var writer: PrintWriter
+
+
     fun start() {
         while(true) {
-            val connection = socket.accept() // Listens for a connection to be made to this socket and accepts it. The method blocks until a connection is made. Returns a new socket
+            acceptConnection()
             try {
-                // Read from request inputstream
-                val clientRequest = readRequest(connection)
+                val clientRequest = readRequest()
 
                 val request = parser.parse(clientRequest)
                 val httpMethod = request.httpMethod
                 val route = request.route
 
-                val controller = router.getController(httpMethod, route)
-                val response = controller.action()
-                // Write to outputstream
-                writeResponse(connection, response.build())
+                val response = router.getController(httpMethod, route).action()
+
+                writeResponse(response.build())
             } catch (e: Exception) {
                 //Logging error
                 println("Something went wrong: ${e.message}")
             } finally {
                 //Close connection
-                connection.close()
+                closeConnection()
             }
 
         }
     }
 
-    private fun readRequest(socketConnection: Socket): String {
-        val reader = BufferedReader(InputStreamReader(socketConnection.getInputStream()))
+    fun acceptConnection() {
+        socket = serverSocket.accept()
+        reader = BufferedReader(InputStreamReader(socket.getInputStream()))
+        writer = PrintWriter(socket.getOutputStream(), true)
+    }
+
+    fun readRequest(): String {
         var clientRequest = ""
 
         while (reader.ready()) {
@@ -46,8 +54,13 @@ class Server(private val socket: ServerSocket,
         return clientRequest
     }
 
-    private fun writeResponse(socketConnection: Socket, response: String) {
-        val writer = PrintWriter(socketConnection.getOutputStream(), true)
+    fun writeResponse(response: String) {
         writer.println(response)
+    }
+
+    fun closeConnection() {
+        reader.close()
+        writer.close()
+        socket.close()
     }
 }
