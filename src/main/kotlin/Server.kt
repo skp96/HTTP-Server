@@ -29,10 +29,8 @@ class Server(private val serverSocket: ServerSocket,
 
                 writeResponse(response.build())
             } catch (e: Exception) {
-                //Logging error
                 println("Something went wrong: ${e.message}")
             } finally {
-                //Close connection
                 closeConnection()
             }
 
