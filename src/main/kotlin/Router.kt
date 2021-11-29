@@ -7,12 +7,12 @@ class Router(private val badRequestController: Controller,
     val routes: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf()
 
     fun addRoute(httpMethod: String, route: String, controller: Controller) {
-        val mapMethod = routes.getOrPut(httpMethod) { mutableMapOf()}
-        mapMethod[route] = controller
+        val mapMethod = routes.getOrPut(route) { mutableMapOf()}
+        mapMethod[httpMethod] = controller
     }
 
     fun getController(httpMethod: String, route: String): Controller {
-        val httpMethodRoutes = routes.get(httpMethod) ?: return badRequestController
-        return httpMethodRoutes.get(route) ?: return notFoundController
+        val resourceRoutes = routes.get(route) ?: return notFoundController
+        return resourceRoutes.get(httpMethod) ?: return badRequestController
     }
 }

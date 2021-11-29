@@ -17,6 +17,8 @@ fun main() {
     val router = Router(badRequestController, notFoundController)
     router.addRoute("GET", "/simple_get", SimpleGetController())
     router.addRoute("GET", "/simple_get_with_body", SimpleGetWithBodyController())
+    router.addRoute("HEAD", "/simple_get", SimpleGetController())
+    router.addRoute("HEAD", "/head_request", SimpleGetController())
 
     println("Server is running on port ${serverSocket.localPort}")
     Server(serverSocket, parser, router).start()
