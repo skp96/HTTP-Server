@@ -8,13 +8,13 @@ class ResponseBuilder(private val statusCode: Int,
     private val crlf = "\r\n"
 
     fun build(): String {
-        val responseLine = generateResponseLine()
+        val statusLine = generateStatusLine()
         var responseHeaders = generateHeaders()
         var responseBody = if (body.isNotEmpty()) setContentLength() + "$crlf$body" else ""
-        return responseLine + responseHeaders + responseBody
+        return statusLine + responseHeaders + responseBody
     }
 
-    private fun generateResponseLine(): String {
+    private fun generateStatusLine(): String {
         val statusMessage = findStatusMessage()
         return "$protocol $statusCode $statusMessage$crlf"
     }
