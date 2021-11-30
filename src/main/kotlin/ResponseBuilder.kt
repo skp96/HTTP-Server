@@ -1,16 +1,17 @@
 package response
 
-class ResponseBuilder(private val statusCode: Int, private val body: String = "") {
+class ResponseBuilder(private val statusCode: Int,
+                      private val body: String = "",
+                      private val headers: Map<String, List<String>> = mapOf()
+                      ) {
     private val protocol = "HTTP/1.1"
     private val crlf = "\r\n"
 
     fun build(): String {
         val responseLine = generateResponseLine()
-        if (body.isNotEmpty()) {
-            val contentLength = setContentLength()
-            return responseLine + "$contentLength$crlf$crlf$body"
-        }
-        return responseLine
+        var responseHeaders = if (headers.isNotEmpty()) generateHeaders() else ""
+        var responseBody = if (body.isNotEmpty()) setContentLength() + "$crlf$body" else ""
+        return responseLine + responseHeaders + responseBody
     }
 
     private fun generateResponseLine(): String {
@@ -26,5 +27,13 @@ class ResponseBuilder(private val statusCode: Int, private val body: String = ""
             else -> "500"
         }
 
-    private fun setContentLength() = "Content-Length: ${body.length}"
+    private fun setContentLength() = "Content-Length: ${body.length}$crlf"
+
+    private fun generateHeaders(): String {
+        var httpHeaders = ""
+        for (header in headers) {
+            httpHeaders += "${header.key}: ${header.value.joinToString()}$crlf"
+        }
+        return httpHeaders
+    }
 }
