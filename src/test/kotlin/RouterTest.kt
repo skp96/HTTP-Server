@@ -28,7 +28,7 @@ class RouterTest {
         val simpleGetWithBodyController: Controller = SimpleGetWithBodyController()
         router.addRoute("GET", "/simple_get_with_body", simpleGetWithBodyController)
         val controller = router.getController("GET", "/simple_get_with_body")
-        assertIs<Controller>(controller)
+        assertIs<SimpleGetWithBodyController>(controller)
     }
 
     @Test
@@ -44,7 +44,7 @@ class RouterTest {
         val simpleGetController: Controller = SimpleGetController()
         router.addRoute("HEAD", "/simple_get", simpleGetController)
         val controller = router.getController("HEAD", "/simple_get")
-        assertIs<Controller>(controller)
+        assertIs<SimpleGetController>(controller)
     }
 
     @Test
@@ -60,7 +60,7 @@ class RouterTest {
         val simpleGetController: Controller = SimpleGetController()
         router.addRoute("HEAD", "/head_request", simpleGetController)
         val controller = router.getController("HEAD", "/head_request")
-        assertIs<Controller>(controller)
+        assertIs<SimpleGetController>(controller)
     }
 
 }
