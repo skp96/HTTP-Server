@@ -4,17 +4,17 @@ class RequestParser {
     private lateinit var requestComponents: List<String>
     private lateinit var httpMethod: String
     private lateinit var route: String
-    private lateinit var body: String
 
     fun parse(clientRequest: String): Request {
         requestComponents = clientRequest.split("\r\n").toList()
         extractRequestLine()
 
         if (containsBody()) {
-            body = requestComponents.last()
+            val body = requestComponents.last()
+            return Request(httpMethod, route, body)
         }
 
-        return Request(httpMethod, route, body)
+        return Request(httpMethod, route)
     }
 
     private fun extractRequestLine() {

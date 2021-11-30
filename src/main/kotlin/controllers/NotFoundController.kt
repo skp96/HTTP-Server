@@ -2,7 +2,7 @@ package controllers
 import response.ResponseBuilder
 
 class NotFoundController : Controller {
-    val statusCode = 404
+    private val statusCode = 404
     private lateinit var requestBody: String
 
     override fun action(): ResponseBuilder {
