@@ -9,7 +9,7 @@ class ResponseBuilder(private val statusCode: Int,
 
     fun build(): String {
         val responseLine = generateResponseLine()
-        var responseHeaders = if (headers.isNotEmpty()) generateHeaders() else ""
+        var responseHeaders = generateHeaders()
         var responseBody = if (body.isNotEmpty()) setContentLength() + "$crlf$body" else ""
         return responseLine + responseHeaders + responseBody
     }
