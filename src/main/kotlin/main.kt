@@ -1,11 +1,8 @@
 @file:JvmName("Main")
+import controllers.*
 import java.net.ServerSocket
 import request.RequestParser
 import router.Router
-import controllers.BadRequestController
-import controllers.NotFoundController
-import controllers.SimpleGetController
-import controllers.SimpleGetWithBodyController
 
 fun main() {
     val serverSocket = ServerSocket(5000)
@@ -19,6 +16,7 @@ fun main() {
     router.addRoute("GET", "/simple_get_with_body", SimpleGetWithBodyController())
     router.addRoute("HEAD", "/simple_get", SimpleGetController())
     router.addRoute("HEAD", "/head_request", SimpleGetController())
+    router.addRoute("POST", "/echo_body", SimplePostController())
 
     println("Server is running on port ${serverSocket.localPort}")
     Server(serverSocket, parser, router).start()

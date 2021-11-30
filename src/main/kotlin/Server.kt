@@ -22,10 +22,8 @@ class Server(private val serverSocket: ServerSocket,
                 val clientRequest = readRequest()
 
                 val request = parser.parse(clientRequest)
-                val httpMethod = request.httpMethod
-                val route = request.route
-
-                val response = router.getController(httpMethod, route).action()
+                val controller = router.routeRequest(request)
+                val response = controller.action()
 
                 writeResponse(response.build())
             } catch (e: Exception) {
@@ -47,7 +45,7 @@ class Server(private val serverSocket: ServerSocket,
         var clientRequest = ""
 
         while (reader.ready()) {
-            clientRequest += reader.readLine()
+            clientRequest += reader.read().toChar()
         }
         return clientRequest
     }
