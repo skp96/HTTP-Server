@@ -55,12 +55,43 @@ class RouterTest {
         assertEquals(expectation, router.routes)
     }
 
+
     @Test
     fun `expect getController to return a controller from head_request route when http method is HEAD`() {
         val simpleGetController: Controller = SimpleGetController()
         router.addRoute("HEAD", "/head_request", simpleGetController)
         val controller = router.getController("HEAD", "/head_request")
         assertIs<SimpleGetController>(controller)
+    }
+
+    @Test
+    fun `expect addRoute member to add OPTIONS method to method_options route`() {
+        val methodOptionsController = MethodOptionsController()
+        router.addRoute("OPTIONS", "/method_options", methodOptionsController)
+        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/method_options" to mutableMapOf("OPTIONS" to methodOptionsController))
+        assertEquals(expectation, router.routes)
+    }
+
+    @Test
+    fun `expect getController to return controller from method_options route when http method is OPTIONS`() {
+        router.addRoute("OPTIONS", "/method_options", MethodOptionsController())
+        val controller = router.getController("OPTIONS", "/method_options")
+        assertIs<MethodOptionsController>(controller)
+    }
+
+    @Test
+    fun `expect addRoute member to add OPTIONS method to method_options2 route`() {
+        val methodOptions2Controller = MethodOptions2Controller()
+        router.addRoute("OPTIONS", "/method_options2", methodOptions2Controller)
+        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/method_options2" to mutableMapOf("OPTIONS" to methodOptions2Controller))
+        assertEquals(expectation, router.routes)
+    }
+
+    @Test
+    fun `expect getController to return controller from method_options2 route when http method is OPTIONS`() {
+        router.addRoute("OPTIONS", "/method_options2", MethodOptions2Controller())
+        val controller = router.getController("OPTIONS", "/method_options2")
+        assertIs<MethodOptions2Controller>(controller)
     }
 
 }
