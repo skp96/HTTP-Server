@@ -68,7 +68,7 @@ class RouterTest {
     fun `expect addRoute member to add OPTIONS method to method_options route`() {
         val methodOptionsController = MethodOptionsController()
         router.addRoute("OPTIONS", "/method_options", methodOptionsController)
-        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("OPTIONS" to mutableMapOf("/method_options" to methodOptionsController))
+        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/method_options" to mutableMapOf("OPTIONS" to methodOptionsController))
         assertEquals(expectation, router.routes)
     }
 
@@ -83,7 +83,7 @@ class RouterTest {
     fun `expect addRoute member to add OPTIONS method to method_options2 route`() {
         val methodOptions2Controller = MethodOptions2Controller()
         router.addRoute("OPTIONS", "/method_options2", methodOptions2Controller)
-        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("OPTIONS" to mutableMapOf("/method_options2" to methodOptions2Controller))
+        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/method_options2" to mutableMapOf("OPTIONS" to methodOptions2Controller))
         assertEquals(expectation, router.routes)
     }
 
