@@ -1,8 +1,9 @@
 package controllers
 import response.ResponseBuilder
+import httpstatus.HttpStatus
 
 class SimpleGetWithBodyController : Controller {
-    private val statusCode = 200
+    private val statusCode = HttpStatus.OK
     private val body = "Hello world"
 
     override fun action(): ResponseBuilder {
