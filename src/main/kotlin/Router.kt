@@ -18,6 +18,7 @@ class Router(private val badRequestController: Controller,
         val resourceRoutes = routes.get(route) ?: return notFoundController
         val controller = resourceRoutes.get(httpMethod) ?: return badRequestController
         controller.setBody(request.body)
+        controller.setHttpMethod(request.httpMethod)
         return controller
     }
 }

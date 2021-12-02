@@ -57,19 +57,19 @@ class RouterTest {
 
     @Test
     fun `expect addRoute member to add HEAD method to head_request route`() {
-        val simpleGetController: Controller = SimpleGetController()
-        router.addRoute("HEAD", "/head_request", simpleGetController)
-        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/head_request" to mutableMapOf("HEAD" to simpleGetController))
+        val headRequestController: Controller = HeadRequestController()
+        router.addRoute("HEAD", "/head_request", headRequestController)
+        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/head_request" to mutableMapOf("HEAD" to headRequestController))
         assertEquals(expectation, router.routes)
     }
 
     @Test
     fun `expect routeRequest to return a controller from head_request route when http method is HEAD`() {
-        val simpleGetController: Controller = SimpleGetController()
-        router.addRoute("HEAD", "/head_request", simpleGetController)
+        val headRequestController: Controller = HeadRequestController()
+        router.addRoute("HEAD", "/head_request", headRequestController)
         val request = Request("HEAD", "/head_request")
         val controller = router.routeRequest(request)
-        assertIs<SimpleGetController>(controller)
+        assertIs<HeadRequestController>(controller)
     }
 
     @Test
@@ -139,18 +139,18 @@ class RouterTest {
 
     @Test
     fun `expect addRoute member to add GET method to head_request`() {
-        val methodNotAllowedController = MethodNotAllowedController()
-        router.addRoute("GET", "/head_request", methodNotAllowedController)
-        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/head_request" to mutableMapOf("GET" to methodNotAllowedController))
+        val headRequestController = HeadRequestController()
+        router.addRoute("GET", "/head_request", headRequestController)
+        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/head_request" to mutableMapOf("GET" to headRequestController))
         assertEquals(expectation, router.routes)
     }
 
     @Test
     fun `expect routeRequest to return controller from head_request route when http method is GET`() {
-        router.addRoute("GET", "/head_request", MethodNotAllowedController())
+        router.addRoute("GET", "/head_request", HeadRequestController())
         val request = Request("GET", "/head_request")
         val controller = router.routeRequest(request)
-        assertIs<MethodNotAllowedController>(controller)
+        assertIs<HeadRequestController>(controller)
     }
 
 }

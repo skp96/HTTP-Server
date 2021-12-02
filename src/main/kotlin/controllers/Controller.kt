@@ -3,5 +3,6 @@ import response.ResponseBuilder
 
 interface Controller {
     fun action(): ResponseBuilder
-    fun setBody(body: String): Unit
+    fun setBody(body: String)
+    fun setHttpMethod(httpMethod: String)
 }
