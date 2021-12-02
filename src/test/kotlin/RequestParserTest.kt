@@ -42,4 +42,17 @@ class RequestParserTest {
         assertEquals(response.httpMethod, "GET")
         assertEquals(response.route, "/simple_get_with_body")
     }
+
+    @Test
+    fun `when parsing a echo_body from client then Request contains http method, route, and body`() {
+        val parser = RequestParser()
+        val clientRequest = "POST /echo_body HTTP/1.1\r\n" + "Connection: close\r\n" + "Host: 127.0.0.1:5000" +
+                "User-Agent: http.rb/4/3.0\r\n" + "Content-Length: 9\r\n" + "\r\nsome body"
+
+        val response = parser.parse(clientRequest)
+
+        assertEquals(response.httpMethod, "POST")
+        assertEquals(response.route, "/echo_body")
+        assertEquals(response.body, "some body")
+    }
 }

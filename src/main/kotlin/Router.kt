@@ -1,5 +1,6 @@
 package router
 import controllers.Controller
+import request.Request
 
 class Router(private val badRequestController: Controller,
              private val notFoundController: Controller) {
@@ -11,8 +12,12 @@ class Router(private val badRequestController: Controller,
         mapMethod[httpMethod] = controller
     }
 
-    fun getController(httpMethod: String, route: String): Controller {
+    fun routeRequest(request: Request): Controller {
+        val httpMethod = request.httpMethod
+        val route = request.route
         val resourceRoutes = routes.get(route) ?: return notFoundController
-        return resourceRoutes.get(httpMethod) ?: return badRequestController
+        val controller = resourceRoutes.get(httpMethod) ?: return badRequestController
+        controller.setBody(request.body)
+        return controller
     }
 }

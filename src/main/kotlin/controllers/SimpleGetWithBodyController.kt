@@ -4,9 +4,14 @@ import httpstatus.HttpStatus
 
 class SimpleGetWithBodyController : Controller {
     private val statusCode = HttpStatus.OK
-    private val body = "Hello world"
+    private val responseBody = "Hello world"
+    private lateinit var requestBody: String
 
     override fun action(): ResponseBuilder {
-        return ResponseBuilder(statusCode, body)
+        return ResponseBuilder(statusCode, responseBody)
+    }
+
+    override fun setBody(body: String) {
+        requestBody = body
     }
 }

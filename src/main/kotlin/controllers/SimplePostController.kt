@@ -2,12 +2,12 @@ package controllers
 import response.ResponseBuilder
 import httpstatus.HttpStatus
 
-class NotFoundController : Controller {
-    val statusCode = HttpStatus.NotFound
+class SimplePostController : Controller {
+    private val statusCode = HttpStatus.OK
     private lateinit var requestBody: String
 
     override fun action(): ResponseBuilder {
-        return ResponseBuilder(statusCode)
+        return ResponseBuilder(statusCode, requestBody)
     }
 
     override fun setBody(body: String) {

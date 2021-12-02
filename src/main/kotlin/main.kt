@@ -16,6 +16,7 @@ fun main() {
     router.addRoute("GET", "/simple_get_with_body", SimpleGetWithBodyController())
     router.addRoute("HEAD", "/simple_get", SimpleGetController())
     router.addRoute("HEAD", "/head_request", SimpleGetController())
+    router.addRoute("POST", "/echo_body", SimplePostController())
     router.addRoute("OPTIONS", "/method_options", MethodOptionsController())
     router.addRoute("OPTIONS", "/method_options2", MethodOptions2Controller())
     router.addRoute("GET", "/redirect", RedirectController())

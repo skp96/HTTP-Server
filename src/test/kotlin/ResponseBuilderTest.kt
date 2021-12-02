@@ -18,6 +18,13 @@ class ResponseBuilderTest {
     }
 
     @Test
+    fun `given a echo_body request build a response`() {
+        val responseBuilder = ResponseBuilder(HttpStatus.OK, "some body")
+        val expectation = "HTTP/1.1 200 OK\r\nContent-Length: 9\r\n\r\nsome body"
+        assertEquals(expectation, responseBuilder.build())
+    }
+
+    @Test
     fun `given method_options build response`() {
         val headers: Map<String, String> = mapOf("Allow" to "GET, HEAD, OPTIONS")
         val responseBuilder = ResponseBuilder(HttpStatus.OK, headers = headers)

@@ -1,4 +1,5 @@
 import controllers.*
+import request.Request
 import router.Router
 import kotlin.test.*
 
@@ -29,10 +30,11 @@ class RouterTest {
     }
 
     @Test
-    fun `expect getController to return a controller from simple_get_with_body route`() {
+    fun `expect routeRequest to return a controller from simple_get_with_body route`() {
         val simpleGetWithBodyController: Controller = SimpleGetWithBodyController()
         router.addRoute("GET", "/simple_get_with_body", simpleGetWithBodyController)
-        val controller = router.getController("GET", "/simple_get_with_body")
+        val request = Request("GET", "/simple_get_with_body")
+        val controller = router.routeRequest(request)
         assertIs<SimpleGetWithBodyController>(controller)
     }
 
@@ -45,10 +47,11 @@ class RouterTest {
     }
 
     @Test
-    fun `expect getController to return a controller from simple_get route when http method is HEAD`() {
+    fun `expect routeRequest to return a controller from simple_get route when http method is HEAD`() {
         val simpleGetController: Controller = SimpleGetController()
         router.addRoute("HEAD", "/simple_get", simpleGetController)
-        val controller = router.getController("HEAD", "/simple_get")
+        val request = Request("HEAD", "/simple_get")
+        val controller = router.routeRequest(request)
         assertIs<SimpleGetController>(controller)
     }
 
@@ -60,13 +63,30 @@ class RouterTest {
         assertEquals(expectation, router.routes)
     }
 
-
     @Test
-    fun `expect getController to return a controller from head_request route when http method is HEAD`() {
+    fun `expect routeRequest to return a controller from head_request route when http method is HEAD`() {
         val simpleGetController: Controller = SimpleGetController()
         router.addRoute("HEAD", "/head_request", simpleGetController)
-        val controller = router.getController("HEAD", "/head_request")
+        val request = Request("HEAD", "/head_request")
+        val controller = router.routeRequest(request)
         assertIs<SimpleGetController>(controller)
+    }
+
+    @Test
+    fun `expect addRoute member to add POST method to echo_body route`() {
+        val simplePostController: Controller = SimplePostController()
+        router.addRoute("POST", "/echo_body", simplePostController)
+        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/echo_body" to mutableMapOf("POST" to simplePostController))
+        assertEquals(expectation, router.routes)
+    }
+
+    @Test
+    fun `expect routeRequest to return a controller from echo_body when http method is POST`() {
+        val simplePostController: Controller = SimplePostController()
+        router.addRoute("POST", "/echo_body", simplePostController)
+        val request = Request("POST", "/echo_body")
+        val controller = router.routeRequest(request)
+        assertIs<SimplePostController>(controller)
     }
 
     @Test
@@ -78,9 +98,10 @@ class RouterTest {
     }
 
     @Test
-    fun `expect getController to return controller from method_options route when http method is OPTIONS`() {
+    fun `expect routeRequest to return controller from method_options route when http method is OPTIONS`() {
         router.addRoute("OPTIONS", "/method_options", MethodOptionsController())
-        val controller = router.getController("OPTIONS", "/method_options")
+        val request = Request("OPTIONS", "/method_options")
+        val controller = router.routeRequest(request)
         assertIs<MethodOptionsController>(controller)
     }
 
@@ -93,9 +114,10 @@ class RouterTest {
     }
 
     @Test
-    fun `expect getController to return controller from method_options2 route when http method is OPTIONS`() {
+    fun `expect routeRequest to return controller from method_options2 route when http method is OPTIONS`() {
         router.addRoute("OPTIONS", "/method_options2", MethodOptions2Controller())
-        val controller = router.getController("OPTIONS", "/method_options2")
+        val request = Request("OPTIONS", "/method_options2")
+        val controller = router.routeRequest(request)
         assertIs<MethodOptions2Controller>(controller)
     }
 
@@ -108,9 +130,10 @@ class RouterTest {
     }
 
     @Test
-    fun `expect getController to return controller from redirect route when http method is GET`() {
+    fun `expect routeRequest to return controller from redirect route when http method is GET`() {
         router.addRoute("GET", "/redirect", RedirectController())
-        val controller = router.getController("GET", "/redirect")
+        val request = Request("GET", "/redirect")
+        val controller = router.routeRequest(request)
         assertIs<RedirectController>(controller)
     }
 
