@@ -1,8 +1,9 @@
 package controllers
 import response.ResponseBuilder
+import httpstatus.HttpStatus
 
 class BadRequestController : Controller {
-    private val statusCode = 400
+    private val statusCode = HttpStatus.BadRequest
     private lateinit var requestBody: String
 
     override fun action(): ResponseBuilder {

@@ -1,30 +1,31 @@
 package response
+import httpstatus.HttpStatus
 
-class ResponseBuilder(private val statusCode: Int, private val body: String = "") {
+class ResponseBuilder(private val statusCode: HttpStatus,
+                      private val body: String = "",
+                      private val headers: Map<String, String> = mapOf()
+                      ) {
     private val protocol = "HTTP/1.1"
     private val crlf = "\r\n"
 
     fun build(): String {
-        val responseLine = generateResponseLine()
-        if (body.isNotEmpty()) {
-            val contentLength = setContentLength()
-            return responseLine + "$contentLength$crlf$crlf$body"
-        }
-        return responseLine
+        val statusLine = generateStatusLine()
+        val responseHeaders = generateHeaders()
+        val responseBody = if (body.isNotEmpty()) setContentLength() + "$crlf$body" else ""
+        return statusLine + responseHeaders + responseBody
     }
 
-    private fun generateResponseLine(): String {
-        val statusMessage = findStatusMessage()
-        return "$protocol $statusCode $statusMessage$crlf"
+    private fun generateStatusLine(): String {
+        return "$protocol ${statusCode.value} ${statusCode.message}$crlf"
     }
 
-    private fun findStatusMessage(): String =
-        when(statusCode) {
-            200 -> "OK"
-            400 -> "Bad Request"
-            404 -> "Not Found"
-            else -> "500"
-        }
+    private fun setContentLength() = "Content-Length: ${body.length}$crlf"
 
-    private fun setContentLength() = "Content-Length: ${body.length}"
+    private fun generateHeaders(): String {
+        var httpHeaders = ""
+        for (header in headers) {
+            httpHeaders += "${header.key}: ${header.value}$crlf"
+        }
+        return httpHeaders
+    }
 }

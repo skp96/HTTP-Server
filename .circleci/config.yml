@@ -139,7 +139,7 @@ jobs:
       - run:
           name: run acceptance tests
           working_directory: ~/repo/http_server_spec
-          command: bundle exec spinach --tags @simple-get,@simple-head,@simple-post
+          command: bundle exec spinach --tags @simple-get,@simple-head,@simple-post,@simple-options,@simple-redirect
 
       - run:
           name: sleep 12
