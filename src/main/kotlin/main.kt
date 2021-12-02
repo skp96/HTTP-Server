@@ -20,6 +20,7 @@ fun main() {
     router.addRoute("OPTIONS", "/method_options", MethodOptionsController())
     router.addRoute("OPTIONS", "/method_options2", MethodOptions2Controller())
     router.addRoute("GET", "/redirect", RedirectController())
+    router.addRoute("GET", "/head_request", MethodNotAllowedController())
 
     println("Server is running on port ${serverSocket.localPort}")
     Server(serverSocket, parser, router).start()

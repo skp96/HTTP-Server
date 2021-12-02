@@ -137,4 +137,20 @@ class RouterTest {
         assertIs<RedirectController>(controller)
     }
 
+    @Test
+    fun `expect addRoute member to add GET method to head_request`() {
+        val methodNotAllowedController = MethodNotAllowedController()
+        router.addRoute("GET", "/head_request", methodNotAllowedController)
+        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/head_request" to mutableMapOf("GET" to methodNotAllowedController))
+        assertEquals(expectation, router.routes)
+    }
+
+    @Test
+    fun `expect routeRequest to return controller from head_request route when http method is GET`() {
+        router.addRoute("GET", "/head_request", MethodNotAllowedController())
+        val request = Request("GET", "/head_request")
+        val controller = router.routeRequest(request)
+        assertIs<MethodNotAllowedController>(controller)
+    }
+
 }
