@@ -3,9 +3,14 @@ import router.Router
 import kotlin.test.*
 
 class RouterTest {
-    private val badRequestController = BadRequestController()
-    private val notFoundController = NotFoundController()
-    private val router = Router(badRequestController, notFoundController)
+    private lateinit var router: Router
+
+    @BeforeTest
+    fun init() {
+        val badRequestController = BadRequestController()
+        val notFoundController = NotFoundController()
+        router = Router(badRequestController, notFoundController)
+    }
 
     @Test
     fun `expect addRoute member to add GET method to the simple_get route`() {
@@ -92,6 +97,21 @@ class RouterTest {
         router.addRoute("OPTIONS", "/method_options2", MethodOptions2Controller())
         val controller = router.getController("OPTIONS", "/method_options2")
         assertIs<MethodOptions2Controller>(controller)
+    }
+
+    @Test
+    fun `expect addRoute member to add GET method to redirect route`() {
+        val redirectController = RedirectController()
+        router.addRoute("GET", "/redirect", redirectController)
+        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/redirect" to mutableMapOf("GET" to redirectController))
+        assertEquals(expectation, router.routes)
+    }
+
+    @Test
+    fun `expect getController to return controller from redirect route when http method is GET`() {
+        router.addRoute("GET", "/redirect", RedirectController())
+        val controller = router.getController("GET", "/redirect")
+        assertIs<RedirectController>(controller)
     }
 
 }
