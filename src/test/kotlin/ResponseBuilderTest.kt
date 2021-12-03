@@ -51,7 +51,7 @@ class ResponseBuilderTest {
     @Test
     fun `given head_request build response`() {
         val headers: Map<String, String> = mapOf("Allow" to "HEAD, OPTIONS")
-        val responseBuilder = ResponseBuilder(HttpStatus.NotAllowed, headers = headers)
+        val responseBuilder = ResponseBuilder(HttpStatus.MethodNotAllowed, headers = headers)
         val expectation = "HTTP/1.1 405 Method Not Allowed\r\nAllow: HEAD, OPTIONS\r\n"
         assertEquals(expectation, responseBuilder.build())
     }

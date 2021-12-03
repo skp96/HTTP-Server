@@ -1,14 +1,13 @@
 package httpstatus
 
 enum class HttpStatus(val value: Int) {
-    OK(200), BadRequest(400), NotFound(404), MovedPermanently(301),
-    NotAllowed(405);
+    OK(200), MovedPermanently(301), NotFound(404),
+    MethodNotAllowed(405);
     val message: String
         get() = when(this) {
             OK -> "OK"
-            BadRequest -> "Bad Request"
-            NotFound -> "Not Found"
             MovedPermanently -> "Moved Permanently"
-            NotAllowed -> "Method Not Allowed"
+            NotFound -> "Not Found"
+            MethodNotAllowed -> "Method Not Allowed"
         }
 }

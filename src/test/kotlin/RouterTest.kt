@@ -8,9 +8,7 @@ class RouterTest {
 
     @BeforeTest
     fun init() {
-        val badRequestController = BadRequestController()
-        val notFoundController = NotFoundController()
-        router = Router(badRequestController, notFoundController)
+        router = Router()
     }
 
     @Test
@@ -151,6 +149,22 @@ class RouterTest {
         val request = Request("GET", "/head_request")
         val controller = router.routeRequest(request)
         assertIs<HeadRequestController>(controller)
+    }
+
+    @Test
+    fun `expect routeRequest to return NotFoundController when endpoint does not exist`() {
+        val request = Request("GET", "/foobar")
+        val controller = router.routeRequest(request)
+        assertIs<NotFoundController>(controller)
+    }
+
+    @Test
+    fun `expect routeRequest to return MethodNotFoundController when invalid method for head_request`() {
+        router.addRoute("HEAD", "/head_request", HeadRequestController())
+        router.addRoute("OPTIONS", "/head_request", HeadRequestController())
+        val request = Request("GET", "/head_request")
+        val controller = router.routeRequest(request)
+        assertIs<MethodNotFoundController>(controller)
     }
 
 }

@@ -9,9 +9,7 @@ fun main() {
 
     val parser = RequestParser()
 
-    val badRequestController = BadRequestController()
-    val notFoundController = NotFoundController()
-    val router = Router(badRequestController, notFoundController)
+    val router = Router()
     router.addRoute("GET", "/simple_get", SimpleGetController())
     router.addRoute("GET", "/simple_get_with_body", SimpleGetWithBodyController())
     router.addRoute("HEAD", "/simple_get", SimpleGetController())
@@ -20,7 +18,7 @@ fun main() {
     router.addRoute("OPTIONS", "/method_options", MethodOptionsController())
     router.addRoute("OPTIONS", "/method_options2", MethodOptions2Controller())
     router.addRoute("GET", "/redirect", RedirectController())
-    router.addRoute("GET", "/head_request", HeadRequestController())
+    router.addRoute("OPTIONS", "/head_request", HeadRequestController())
 
     println("Server is running on port ${serverSocket.localPort}")
     Server(serverSocket, parser, router).start()

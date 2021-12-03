@@ -7,7 +7,6 @@ class RedirectController : Controller {
     private val statusCode = HttpStatus.MovedPermanently
     private val headers: Map<String, String> = mapOf("Location" to "http://127.0.0.1:5000/simple_get")
     private lateinit var requestBody: String
-    private lateinit var method: String
 
     override fun action(): ResponseBuilder {
         return ResponseBuilder(statusCode, headers = headers)
@@ -15,9 +14,5 @@ class RedirectController : Controller {
 
     override fun setBody(body: String) {
         requestBody = body
-    }
-
-    override fun setHttpMethod(httpMethod: String) {
-        method = httpMethod
     }
 }
