@@ -1,8 +1,8 @@
-package controllers
+package Actions
 import response.ResponseBuilder
 import httpstatus.HttpStatus
 
-class MethodNotFoundController(private val allowedMethods: MutableSet<String>) : Controller {
+class MethodNotAllowedAction(private val allowedMethods: MutableSet<String>) : Action {
     private val statusCode = HttpStatus.MethodNotAllowed
     private lateinit var requestBody: String
     private lateinit var headers: Map<String, String>

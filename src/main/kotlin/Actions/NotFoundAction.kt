@@ -1,14 +1,13 @@
-package controllers
+package Actions
 import response.ResponseBuilder
 import httpstatus.HttpStatus
 
-class SimpleGetWithBodyController : Controller {
-    private val statusCode = HttpStatus.OK
-    private val responseBody = "Hello world"
+class NotFoundAction : Action {
+    val statusCode = HttpStatus.NotFound
     private lateinit var requestBody: String
 
     override fun action(): ResponseBuilder {
-        return ResponseBuilder(statusCode, responseBody)
+        return ResponseBuilder(statusCode)
     }
 
     override fun setBody(body: String) {

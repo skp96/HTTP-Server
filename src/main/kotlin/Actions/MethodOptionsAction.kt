@@ -1,13 +1,14 @@
-package controllers
+package Actions
 import response.ResponseBuilder
 import httpstatus.HttpStatus
 
-class SimplePostController : Controller {
+class MethodOptionsAction : Action {
     private val statusCode = HttpStatus.OK
+    private val headers: Map<String, String> = mapOf("Allow" to "GET, HEAD, OPTIONS")
     private lateinit var requestBody: String
 
     override fun action(): ResponseBuilder {
-        return ResponseBuilder(statusCode, requestBody)
+        return ResponseBuilder(statusCode, headers = headers)
     }
 
     override fun setBody(body: String) {

@@ -1,7 +1,7 @@
-package controllers
+package Actions
 import response.ResponseBuilder
 
-interface Controller {
+interface Action {
     fun action(): ResponseBuilder
     fun setBody(body: String)
 }

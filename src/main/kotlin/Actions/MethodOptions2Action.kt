@@ -1,8 +1,8 @@
-package controllers
+package Actions
 import response.ResponseBuilder
 import httpstatus.HttpStatus
 
-class MethodOptions2Controller : Controller {
+class MethodOptions2Action : Action {
     private val statusCode = HttpStatus.OK
     private val headers: Map<String, String> = mapOf("Allow" to "GET, HEAD, OPTIONS, PUT, POST")
     private lateinit var requestBody: String
