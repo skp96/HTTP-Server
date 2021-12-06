@@ -37,7 +37,11 @@ class Server(private val serverSocket: ServerSocket,
 
     fun acceptConnection() {
         socket = serverSocket.accept()
-        reader = BufferedReader(InputStreamReader(socket.getInputStream()))
+        val inputStream = socket.getInputStream()
+        while (inputStream.available() == 0) {
+            continue
+        }
+        reader = BufferedReader(InputStreamReader(inputStream))
         writer = PrintWriter(socket.getOutputStream(), true)
     }
 
