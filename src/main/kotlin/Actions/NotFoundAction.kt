@@ -1,9 +1,9 @@
-package controllers
+package Actions
 import response.ResponseBuilder
 import httpstatus.HttpStatus
 
-class BadRequestController : Controller {
-    private val statusCode = HttpStatus.BadRequest
+class NotFoundAction : Action {
+    val statusCode = HttpStatus.NotFound
     private lateinit var requestBody: String
 
     override fun action(): ResponseBuilder {

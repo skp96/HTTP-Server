@@ -1,9 +1,10 @@
-package controllers
-import response.ResponseBuilder
-import httpstatus.HttpStatus
+package Actions
 
-class SimpleGetController : Controller {
-    private val statusCode = HttpStatus.OK
+import httpstatus.HttpStatus
+import response.ResponseBuilder
+
+class HeadRequestAction : Action {
+    private var statusCode = HttpStatus.OK
     private lateinit var requestBody: String
 
     override fun action(): ResponseBuilder {

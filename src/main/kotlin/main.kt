@@ -1,5 +1,5 @@
 @file:JvmName("Main")
-import controllers.*
+import Actions.*
 import java.net.ServerSocket
 import request.RequestParser
 import router.Router
@@ -9,17 +9,16 @@ fun main() {
 
     val parser = RequestParser()
 
-    val badRequestController = BadRequestController()
-    val notFoundController = NotFoundController()
-    val router = Router(badRequestController, notFoundController)
-    router.addRoute("GET", "/simple_get", SimpleGetController())
-    router.addRoute("GET", "/simple_get_with_body", SimpleGetWithBodyController())
-    router.addRoute("HEAD", "/simple_get", SimpleGetController())
-    router.addRoute("HEAD", "/head_request", SimpleGetController())
-    router.addRoute("POST", "/echo_body", SimplePostController())
-    router.addRoute("OPTIONS", "/method_options", MethodOptionsController())
-    router.addRoute("OPTIONS", "/method_options2", MethodOptions2Controller())
-    router.addRoute("GET", "/redirect", RedirectController())
+    val router = Router()
+    router.addRoute("GET", "/simple_get", SimpleGetAction())
+    router.addRoute("GET", "/simple_get_with_body", SimpleGetWithBodyAction())
+    router.addRoute("HEAD", "/simple_get", SimpleGetAction())
+    router.addRoute("HEAD", "/head_request", HeadRequestAction())
+    router.addRoute("POST", "/echo_body", SimplePostAction())
+    router.addRoute("OPTIONS", "/method_options", MethodOptionsAction())
+    router.addRoute("OPTIONS", "/method_options2", MethodOptions2Action())
+    router.addRoute("GET", "/redirect", RedirectAction())
+    router.addRoute("OPTIONS", "/head_request", HeadRequestAction())
 
     println("Server is running on port ${serverSocket.localPort}")
     Server(serverSocket, parser, router).start()

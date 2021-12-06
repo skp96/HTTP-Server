@@ -1,9 +1,9 @@
-package controllers
+package Actions
 
 import response.ResponseBuilder
 import httpstatus.HttpStatus
 
-class RedirectController : Controller {
+class RedirectAction : Action {
     private val statusCode = HttpStatus.MovedPermanently
     private val headers: Map<String, String> = mapOf("Location" to "http://127.0.0.1:5000/simple_get")
     private lateinit var requestBody: String

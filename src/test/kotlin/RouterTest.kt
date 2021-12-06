@@ -1,4 +1,4 @@
-import controllers.*
+import Actions.*
 import request.Request
 import router.Router
 import kotlin.test.*
@@ -8,133 +8,163 @@ class RouterTest {
 
     @BeforeTest
     fun init() {
-        val badRequestController = BadRequestController()
-        val notFoundController = NotFoundController()
-        router = Router(badRequestController, notFoundController)
+        router = Router()
     }
 
     @Test
     fun `expect addRoute member to add GET method to the simple_get route`() {
-        val simpleGetController: Controller = SimpleGetController()
-        router.addRoute("GET", "/simple_get", simpleGetController)
-        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/simple_get" to mutableMapOf("GET" to simpleGetController))
+        val simpleGetAction: Action = SimpleGetAction()
+        router.addRoute("GET", "/simple_get", simpleGetAction)
+        val expectation: MutableMap<String, MutableMap<String, Action>> = mutableMapOf("/simple_get" to mutableMapOf("GET" to simpleGetAction))
         assertEquals(expectation, router.routes)
     }
 
     @Test
     fun `expect addRoute member to add GET method to simple_get_with_body route`() {
-        val simpleGetWithBodyController: Controller = SimpleGetWithBodyController()
-        router.addRoute("GET", "/simple_get_with_body", simpleGetWithBodyController)
-        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/simple_get_with_body" to mutableMapOf("GET" to simpleGetWithBodyController))
+        val simpleGetWithBodyAction: Action = SimpleGetWithBodyAction()
+        router.addRoute("GET", "/simple_get_with_body", simpleGetWithBodyAction)
+        val expectation: MutableMap<String, MutableMap<String, Action>> = mutableMapOf("/simple_get_with_body" to mutableMapOf("GET" to simpleGetWithBodyAction))
         assertEquals(expectation, router.routes)
     }
 
     @Test
     fun `expect routeRequest to return a controller from simple_get_with_body route`() {
-        val simpleGetWithBodyController: Controller = SimpleGetWithBodyController()
-        router.addRoute("GET", "/simple_get_with_body", simpleGetWithBodyController)
+        val simpleGetWithBodyAction: Action = SimpleGetWithBodyAction()
+        router.addRoute("GET", "/simple_get_with_body", simpleGetWithBodyAction)
         val request = Request("GET", "/simple_get_with_body")
         val controller = router.routeRequest(request)
-        assertIs<SimpleGetWithBodyController>(controller)
+        assertIs<SimpleGetWithBodyAction>(controller)
     }
 
     @Test
     fun `expect addRoute member to add HEAD method to simple_get route`() {
-        val simpleGetController: Controller = SimpleGetController()
-        router.addRoute("HEAD", "/simple_get", simpleGetController)
-        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/simple_get" to mutableMapOf("HEAD" to simpleGetController))
+        val simpleGetAction: Action = SimpleGetAction()
+        router.addRoute("HEAD", "/simple_get", simpleGetAction)
+        val expectation: MutableMap<String, MutableMap<String, Action>> = mutableMapOf("/simple_get" to mutableMapOf("HEAD" to simpleGetAction))
         assertEquals(expectation, router.routes)
     }
 
     @Test
     fun `expect routeRequest to return a controller from simple_get route when http method is HEAD`() {
-        val simpleGetController: Controller = SimpleGetController()
-        router.addRoute("HEAD", "/simple_get", simpleGetController)
+        val simpleGetAction: Action = SimpleGetAction()
+        router.addRoute("HEAD", "/simple_get", simpleGetAction)
         val request = Request("HEAD", "/simple_get")
         val controller = router.routeRequest(request)
-        assertIs<SimpleGetController>(controller)
+        assertIs<SimpleGetAction>(controller)
     }
 
     @Test
     fun `expect addRoute member to add HEAD method to head_request route`() {
-        val simpleGetController: Controller = SimpleGetController()
-        router.addRoute("HEAD", "/head_request", simpleGetController)
-        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/head_request" to mutableMapOf("HEAD" to simpleGetController))
+        val headRequestAction: Action = HeadRequestAction()
+        router.addRoute("HEAD", "/head_request", headRequestAction)
+        val expectation: MutableMap<String, MutableMap<String, Action>> = mutableMapOf("/head_request" to mutableMapOf("HEAD" to headRequestAction))
         assertEquals(expectation, router.routes)
     }
 
     @Test
     fun `expect routeRequest to return a controller from head_request route when http method is HEAD`() {
-        val simpleGetController: Controller = SimpleGetController()
-        router.addRoute("HEAD", "/head_request", simpleGetController)
+        val headRequestAction: Action = HeadRequestAction()
+        router.addRoute("HEAD", "/head_request", headRequestAction)
         val request = Request("HEAD", "/head_request")
         val controller = router.routeRequest(request)
-        assertIs<SimpleGetController>(controller)
+        assertIs<HeadRequestAction>(controller)
     }
 
     @Test
     fun `expect addRoute member to add POST method to echo_body route`() {
-        val simplePostController: Controller = SimplePostController()
-        router.addRoute("POST", "/echo_body", simplePostController)
-        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/echo_body" to mutableMapOf("POST" to simplePostController))
+        val simplePostAction: Action = SimplePostAction()
+        router.addRoute("POST", "/echo_body", simplePostAction)
+        val expectation: MutableMap<String, MutableMap<String, Action>> = mutableMapOf("/echo_body" to mutableMapOf("POST" to simplePostAction))
         assertEquals(expectation, router.routes)
     }
 
     @Test
     fun `expect routeRequest to return a controller from echo_body when http method is POST`() {
-        val simplePostController: Controller = SimplePostController()
-        router.addRoute("POST", "/echo_body", simplePostController)
+        val simplePostAction: Action = SimplePostAction()
+        router.addRoute("POST", "/echo_body", simplePostAction)
         val request = Request("POST", "/echo_body")
         val controller = router.routeRequest(request)
-        assertIs<SimplePostController>(controller)
+        assertIs<SimplePostAction>(controller)
     }
 
     @Test
     fun `expect addRoute member to add OPTIONS method to method_options route`() {
-        val methodOptionsController = MethodOptionsController()
+        val methodOptionsController = MethodOptionsAction()
         router.addRoute("OPTIONS", "/method_options", methodOptionsController)
-        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/method_options" to mutableMapOf("OPTIONS" to methodOptionsController))
+        val expectation: MutableMap<String, MutableMap<String, Action>> = mutableMapOf("/method_options" to mutableMapOf("OPTIONS" to methodOptionsController))
         assertEquals(expectation, router.routes)
     }
 
     @Test
     fun `expect routeRequest to return controller from method_options route when http method is OPTIONS`() {
-        router.addRoute("OPTIONS", "/method_options", MethodOptionsController())
+        router.addRoute("OPTIONS", "/method_options", MethodOptionsAction())
         val request = Request("OPTIONS", "/method_options")
         val controller = router.routeRequest(request)
-        assertIs<MethodOptionsController>(controller)
+        assertIs<MethodOptionsAction>(controller)
     }
 
     @Test
     fun `expect addRoute member to add OPTIONS method to method_options2 route`() {
-        val methodOptions2Controller = MethodOptions2Controller()
+        val methodOptions2Controller = MethodOptions2Action()
         router.addRoute("OPTIONS", "/method_options2", methodOptions2Controller)
-        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/method_options2" to mutableMapOf("OPTIONS" to methodOptions2Controller))
+        val expectation: MutableMap<String, MutableMap<String, Action>> = mutableMapOf("/method_options2" to mutableMapOf("OPTIONS" to methodOptions2Controller))
         assertEquals(expectation, router.routes)
     }
 
     @Test
     fun `expect routeRequest to return controller from method_options2 route when http method is OPTIONS`() {
-        router.addRoute("OPTIONS", "/method_options2", MethodOptions2Controller())
+        router.addRoute("OPTIONS", "/method_options2", MethodOptions2Action())
         val request = Request("OPTIONS", "/method_options2")
         val controller = router.routeRequest(request)
-        assertIs<MethodOptions2Controller>(controller)
+        assertIs<MethodOptions2Action>(controller)
     }
 
     @Test
     fun `expect addRoute member to add GET method to redirect route`() {
-        val redirectController = RedirectController()
+        val redirectController = RedirectAction()
         router.addRoute("GET", "/redirect", redirectController)
-        val expectation: MutableMap<String, MutableMap<String, Controller>> = mutableMapOf("/redirect" to mutableMapOf("GET" to redirectController))
+        val expectation: MutableMap<String, MutableMap<String, Action>> = mutableMapOf("/redirect" to mutableMapOf("GET" to redirectController))
         assertEquals(expectation, router.routes)
     }
 
     @Test
     fun `expect routeRequest to return controller from redirect route when http method is GET`() {
-        router.addRoute("GET", "/redirect", RedirectController())
+        router.addRoute("GET", "/redirect", RedirectAction())
         val request = Request("GET", "/redirect")
         val controller = router.routeRequest(request)
-        assertIs<RedirectController>(controller)
+        assertIs<RedirectAction>(controller)
+    }
+
+    @Test
+    fun `expect addRoute member to add GET method to head_request`() {
+        val headRequestController = HeadRequestAction()
+        router.addRoute("GET", "/head_request", headRequestController)
+        val expectation: MutableMap<String, MutableMap<String, Action>> = mutableMapOf("/head_request" to mutableMapOf("GET" to headRequestController))
+        assertEquals(expectation, router.routes)
+    }
+
+    @Test
+    fun `expect routeRequest to return controller from head_request route when http method is GET`() {
+        router.addRoute("GET", "/head_request", HeadRequestAction())
+        val request = Request("GET", "/head_request")
+        val controller = router.routeRequest(request)
+        assertIs<HeadRequestAction>(controller)
+    }
+
+    @Test
+    fun `expect routeRequest to return NotFoundController when endpoint does not exist`() {
+        val request = Request("GET", "/foobar")
+        val controller = router.routeRequest(request)
+        assertIs<NotFoundAction>(controller)
+    }
+
+    @Test
+    fun `expect routeRequest to return MethodNotFoundController when invalid method for head_request`() {
+        router.addRoute("HEAD", "/head_request", HeadRequestAction())
+        router.addRoute("OPTIONS", "/head_request", HeadRequestAction())
+        val request = Request("GET", "/head_request")
+        val controller = router.routeRequest(request)
+        assertIs<MethodNotAllowedAction>(controller)
     }
 
 }
