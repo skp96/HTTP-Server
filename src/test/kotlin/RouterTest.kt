@@ -28,12 +28,12 @@ class RouterTest {
     }
 
     @Test
-    fun `expect routeRequest to return a controller from simple_get_with_body route`() {
+    fun `expect routeRequest to return SimpleGetWithBodyAction from simple_get_with_body route when http method is GET`() {
         val simpleGetWithBodyAction: Action = SimpleGetWithBodyAction()
         router.addRoute("GET", "/simple_get_with_body", simpleGetWithBodyAction)
         val request = Request("GET", "/simple_get_with_body")
-        val controller = router.routeRequest(request)
-        assertIs<SimpleGetWithBodyAction>(controller)
+        val action = router.routeRequest(request)
+        assertIs<SimpleGetWithBodyAction>(action)
     }
 
     @Test
@@ -45,12 +45,12 @@ class RouterTest {
     }
 
     @Test
-    fun `expect routeRequest to return a controller from simple_get route when http method is HEAD`() {
+    fun `expect routeRequest to return a SimpleGetAction from simple_get route when http method is HEAD`() {
         val simpleGetAction: Action = SimpleGetAction()
         router.addRoute("HEAD", "/simple_get", simpleGetAction)
         val request = Request("HEAD", "/simple_get")
-        val controller = router.routeRequest(request)
-        assertIs<SimpleGetAction>(controller)
+        val action = router.routeRequest(request)
+        assertIs<SimpleGetAction>(action)
     }
 
     @Test
@@ -62,12 +62,12 @@ class RouterTest {
     }
 
     @Test
-    fun `expect routeRequest to return a controller from head_request route when http method is HEAD`() {
+    fun `expect routeRequest to return a HeadRequestAction from head_request route when http method is HEAD`() {
         val headRequestAction: Action = HeadRequestAction()
         router.addRoute("HEAD", "/head_request", headRequestAction)
         val request = Request("HEAD", "/head_request")
-        val controller = router.routeRequest(request)
-        assertIs<HeadRequestAction>(controller)
+        val action = router.routeRequest(request)
+        assertIs<HeadRequestAction>(action)
     }
 
     @Test
@@ -79,12 +79,12 @@ class RouterTest {
     }
 
     @Test
-    fun `expect routeRequest to return a controller from echo_body when http method is POST`() {
+    fun `expect routeRequest to return a SimplePostAction from echo_body when http method is POST`() {
         val simplePostAction: Action = SimplePostAction()
         router.addRoute("POST", "/echo_body", simplePostAction)
         val request = Request("POST", "/echo_body")
-        val controller = router.routeRequest(request)
-        assertIs<SimplePostAction>(controller)
+        val action = router.routeRequest(request)
+        assertIs<SimplePostAction>(action)
     }
 
     @Test
@@ -96,11 +96,11 @@ class RouterTest {
     }
 
     @Test
-    fun `expect routeRequest to return controller from method_options route when http method is OPTIONS`() {
+    fun `expect routeRequest to return MethodOptionsAction from method_options route when http method is OPTIONS`() {
         router.addRoute("OPTIONS", "/method_options", MethodOptionsAction())
         val request = Request("OPTIONS", "/method_options")
-        val controller = router.routeRequest(request)
-        assertIs<MethodOptionsAction>(controller)
+        val action = router.routeRequest(request)
+        assertIs<MethodOptionsAction>(action)
     }
 
     @Test
@@ -112,11 +112,11 @@ class RouterTest {
     }
 
     @Test
-    fun `expect routeRequest to return controller from method_options2 route when http method is OPTIONS`() {
+    fun `expect routeRequest to return MethodOptions2Action from method_options2 route when http method is OPTIONS`() {
         router.addRoute("OPTIONS", "/method_options2", MethodOptions2Action())
         val request = Request("OPTIONS", "/method_options2")
-        val controller = router.routeRequest(request)
-        assertIs<MethodOptions2Action>(controller)
+        val action = router.routeRequest(request)
+        assertIs<MethodOptions2Action>(action)
     }
 
     @Test
@@ -128,11 +128,11 @@ class RouterTest {
     }
 
     @Test
-    fun `expect routeRequest to return controller from redirect route when http method is GET`() {
+    fun `expect routeRequest to return RedirectAction from redirect route when http method is GET`() {
         router.addRoute("GET", "/redirect", RedirectAction())
         val request = Request("GET", "/redirect")
-        val controller = router.routeRequest(request)
-        assertIs<RedirectAction>(controller)
+        val action = router.routeRequest(request)
+        assertIs<RedirectAction>(action)
     }
 
     @Test
@@ -144,27 +144,27 @@ class RouterTest {
     }
 
     @Test
-    fun `expect routeRequest to return controller from head_request route when http method is GET`() {
+    fun `expect routeRequest to return HeadRequestAction from head_request route when http method is GET`() {
         router.addRoute("GET", "/head_request", HeadRequestAction())
         val request = Request("GET", "/head_request")
-        val controller = router.routeRequest(request)
-        assertIs<HeadRequestAction>(controller)
+        val action = router.routeRequest(request)
+        assertIs<HeadRequestAction>(action)
     }
 
     @Test
-    fun `expect routeRequest to return NotFoundController when endpoint does not exist`() {
+    fun `expect routeRequest to return NotFoundAction when endpoint does not exist`() {
         val request = Request("GET", "/foobar")
-        val controller = router.routeRequest(request)
-        assertIs<NotFoundAction>(controller)
+        val action = router.routeRequest(request)
+        assertIs<NotFoundAction>(action)
     }
 
     @Test
-    fun `expect routeRequest to return MethodNotFoundController when invalid method for head_request`() {
+    fun `expect routeRequest to return MethodNotFoundAction when invalid method for head_request`() {
         router.addRoute("HEAD", "/head_request", HeadRequestAction())
         router.addRoute("OPTIONS", "/head_request", HeadRequestAction())
         val request = Request("GET", "/head_request")
-        val controller = router.routeRequest(request)
-        assertIs<MethodNotAllowedAction>(controller)
+        val action = router.routeRequest(request)
+        assertIs<MethodNotAllowedAction>(action)
     }
 
     @Test
