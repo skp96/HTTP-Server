@@ -63,4 +63,14 @@ class HttpResponseBuilderTest {
         val expectation = "HTTP/1.1 405 Method Not Allowed\r\nAllow: HEAD, OPTIONS\r\n"
         assertEquals(expectation, httpResponseBuilder.build())
     }
+
+    @Test
+    fun `given http_response build response`() {
+        val httpResponseBuilder = HttpResponseBuilder()
+        httpResponseBuilder.setStatusCode(HttpStatus.OK)
+        httpResponseBuilder.setHeaders(mapOf("Content-Type" to "text/html;charset=utf-8"))
+        httpResponseBuilder.setBody("<html><body><p>HTML Response</p></body></html>")
+        val expectation = "HTTP/1.1 200 OK\r\nContent-Type: text/html;charset=utf-8\r\nContent-Length: 46\r\n\r\n<html><body><p>HTML Response</p></body></html>"
+        assertEquals(expectation, httpResponseBuilder.build())
+    }
 }

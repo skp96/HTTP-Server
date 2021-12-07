@@ -21,6 +21,7 @@ fun main() {
     router.addRoute("OPTIONS", "/method_options2", MethodOptions2Action())
     router.addRoute("GET", "/redirect", RedirectAction())
     router.addRoute("OPTIONS", "/head_request", HeadRequestAction())
+    router.addRoute("GET", "/html_response", GetHTMLResponseAction())
 
     println("Server is running on port ${serverSocket.localPort}")
     Server(serverSocket, parser, responseBuilder, router).start()

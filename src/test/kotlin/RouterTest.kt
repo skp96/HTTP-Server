@@ -167,4 +167,20 @@ class RouterTest {
         assertIs<MethodNotAllowedAction>(controller)
     }
 
+    @Test
+    fun `expect addRoute to add GET method and GetHtmlResponseAction to html_response route`() {
+        val getHTMLResponseAction = GetHTMLResponseAction()
+        router.addRoute("GET", "/html_response", getHTMLResponseAction)
+        val expectation: MutableMap<String, MutableMap<String, Action>> = mutableMapOf("/html_response" to mutableMapOf("GET" to getHTMLResponseAction))
+        assertEquals(expectation, router.routes)
+    }
+
+    @Test
+    fun `expect routeRequest to return GETHtmlResponseAction from html_response route when http method is GET`() {
+        router.addRoute("GET", "/html_response", GetHTMLResponseAction())
+        val request = Request("GET", "/html_response")
+        val action = router.routeRequest(request)
+        assertIs<GetHTMLResponseAction>(action)
+    }
+
 }
