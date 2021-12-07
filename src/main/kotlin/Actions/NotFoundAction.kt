@@ -1,13 +1,14 @@
 package Actions
-import response.ResponseBuilder
 import httpstatus.HttpStatus
+import response.ResponseBuilder
 
 class NotFoundAction : Action {
     val statusCode = HttpStatus.NotFound
     private lateinit var requestBody: String
 
-    override fun action(): ResponseBuilder {
-        return ResponseBuilder(statusCode)
+    override fun act(responseBuilder: ResponseBuilder): String {
+        responseBuilder.setStatusCode(statusCode)
+        return responseBuilder.build()
     }
 
     override fun setBody(body: String) {
