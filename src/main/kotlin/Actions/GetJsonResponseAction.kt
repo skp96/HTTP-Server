@@ -1,13 +1,13 @@
 package Actions
 
+import StructuredDataGenerators.JsonGenerator
 import contenttype.HttpContentTypes
 import response.ResponseBuilder
 
-class GetHTMLResponseAction : Action {
-    private val headers = mapOf("Content-Type" to (HttpContentTypes.HTML.type + HttpContentTypes.HTML.parameter))
-    private val responseBody = "<html><body><p>HTML Response</p></body></html>"
+class GetJsonResponseAction(jsonGenerator: JsonGenerator) : Action {
+    private val headers = mapOf("Content-Type" to (HttpContentTypes.JSON.type + HttpContentTypes.JSON.parameter))
+    private val responseBody = jsonGenerator.generateJson(mapOf("key1" to "value1", "key2" to "value2"))
     private lateinit var requestBody: String
-
 
     override fun act(responseBuilder: ResponseBuilder): String {
         responseBuilder.setHeaders(headers)

@@ -1,6 +1,8 @@
+import contenttype.HttpContentTypes
 import kotlin.test.*
 import response.HttpResponseBuilder
 import httpstatus.HttpStatus
+import org.json.JSONObject
 
 class HttpResponseBuilderTest {
     @Test
@@ -71,6 +73,18 @@ class HttpResponseBuilderTest {
         httpResponseBuilder.setHeaders(mapOf("Content-Type" to "text/html;charset=utf-8"))
         httpResponseBuilder.setBody("<html><body><p>HTML Response</p></body></html>")
         val expectation = "HTTP/1.1 200 OK\r\nContent-Type: text/html;charset=utf-8\r\nContent-Length: 46\r\n\r\n<html><body><p>HTML Response</p></body></html>"
+        assertEquals(expectation, httpResponseBuilder.build())
+    }
+
+    @Test
+    fun `given json_response build response`() {
+        val httpResponseBuilder = HttpResponseBuilder()
+        httpResponseBuilder.setHeaders(mapOf("Content-Type" to (HttpContentTypes.JSON.type + HttpContentTypes.JSON.parameter)))
+        val jsonBody = JSONObject()
+        jsonBody.put("key1", "value1")
+        jsonBody.put("key2", "value2")
+        httpResponseBuilder.setBody(jsonBody.toString())
+        val expectation = "HTTP/1.1 200 OK\r\nContent-Type: application/json;charset=utf-8\r\nContent-Length: 33\r\n\r\n{\"key1\":\"value1\",\"key2\":\"value2\"}"
         assertEquals(expectation, httpResponseBuilder.build())
     }
 }
