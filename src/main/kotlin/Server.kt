@@ -2,6 +2,7 @@ import router.Router
 import request.RequestParser
 import response.ResponseBuilder
 import java.io.BufferedReader
+import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.ServerSocket
@@ -37,17 +38,14 @@ class Server(private val serverSocket: ServerSocket,
         }
     }
 
-    fun acceptConnection() {
+    private fun acceptConnection() {
         socket = serverSocket.accept()
-        val inputStream = socket.getInputStream()
-        while (socket.getInputStream().available() == 0) {
-            continue
-        }
+        val inputStream = populateInputStream(socket)
         reader = BufferedReader(InputStreamReader(inputStream))
         writer = PrintWriter(socket.getOutputStream(), true)
     }
 
-    fun readRequest(): String {
+    private fun readRequest(): String {
         var clientRequest = ""
 
         while (reader.ready()) {
@@ -56,13 +54,21 @@ class Server(private val serverSocket: ServerSocket,
         return clientRequest
     }
 
-    fun writeResponse(response: String) {
+    private fun writeResponse(response: String) {
         writer.println(response)
     }
 
-    fun closeConnection() {
+    private fun closeConnection() {
         reader.close()
         writer.close()
         socket.close()
+    }
+
+    private fun populateInputStream(socket: Socket): InputStream {
+        val stream = socket.getInputStream()
+        while(stream.available() == 0) {
+            continue
+        }
+        return stream
     }
 }
