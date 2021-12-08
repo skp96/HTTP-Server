@@ -2,6 +2,6 @@ package Actions
 import response.ResponseBuilder
 
 interface Action {
-    fun action(): ResponseBuilder
+    fun act(responseBuilder: ResponseBuilder): String
     fun setBody(body: String)
 }

@@ -1,5 +1,6 @@
 import router.Router
 import request.RequestParser
+import response.ResponseBuilder
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.PrintWriter
@@ -8,11 +9,12 @@ import java.net.Socket
 
 class Server(private val serverSocket: ServerSocket,
              private val parser: RequestParser,
+             private val responseBuilder: ResponseBuilder,
              private val router: Router) {
 
-    lateinit private var socket: Socket
-    lateinit private var reader: BufferedReader
-    lateinit private var writer: PrintWriter
+    private lateinit var socket: Socket
+    private lateinit var reader: BufferedReader
+    private lateinit var writer: PrintWriter
 
 
     fun start() {
@@ -22,10 +24,10 @@ class Server(private val serverSocket: ServerSocket,
                 val clientRequest = readRequest()
 
                 val request = parser.parse(clientRequest)
-                val controller = router.routeRequest(request)
-                val response = controller.action()
+                val action = router.routeRequest(request)
+                val response = action.act(responseBuilder)
 
-                writeResponse(response.build())
+                writeResponse(response)
             } catch (e: Exception) {
                 println("Something went wrong: ${e.message}")
             } finally {
@@ -37,7 +39,11 @@ class Server(private val serverSocket: ServerSocket,
 
     fun acceptConnection() {
         socket = serverSocket.accept()
-        reader = BufferedReader(InputStreamReader(socket.getInputStream()))
+        val inputStream = socket.getInputStream()
+        while (socket.getInputStream().available() == 0) {
+            continue
+        }
+        reader = BufferedReader(InputStreamReader(inputStream))
         writer = PrintWriter(socket.getOutputStream(), true)
     }
 
