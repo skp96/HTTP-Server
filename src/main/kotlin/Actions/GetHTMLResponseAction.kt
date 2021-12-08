@@ -1,10 +1,10 @@
 package Actions
 
-import httpstatus.HttpStatus
+import contenttype.HttpContentTypes
 import response.ResponseBuilder
 
 class GetHTMLResponseAction : Action {
-    private val headers = mapOf("Content-Type" to "text/html;charset=utf-8")
+    private val headers = mapOf("Content-Type" to HttpContentTypes.HTML.type)
     private val responseBody = "<html><body><p>HTML Response</p></body></html>"
     private lateinit var requestBody: String
 
