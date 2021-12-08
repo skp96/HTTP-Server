@@ -19,8 +19,8 @@ class RequestParserTest {
 
         val request = parser.parse(clientRequest)
 
-        assertEquals(request.httpMethod, "GET")
-        assertEquals(request.route, "/simple_get")
+        assertEquals("GET", request.httpMethod)
+        assertEquals("/simple_get" ,request.route)
     }
 
     @Test
@@ -37,10 +37,10 @@ class RequestParserTest {
         val clientRequest = "GET /simple_get_with_body HTTP/1.1\r\n" + "Connection: close\r\n" + "Host: 127.0.0.1:5000\r\n" +
                 "User-Agent: http.rb/4.3.0\r\n" + "Content-Length: 0"
 
-        val response = parser.parse(clientRequest)
+        val request = parser.parse(clientRequest)
 
-        assertEquals(response.httpMethod, "GET")
-        assertEquals(response.route, "/simple_get_with_body")
+        assertEquals("GET", request.httpMethod)
+        assertEquals("/simple_get_with_body", request.route)
     }
 
     @Test
@@ -49,10 +49,22 @@ class RequestParserTest {
         val clientRequest = "POST /echo_body HTTP/1.1\r\n" + "Connection: close\r\n" + "Host: 127.0.0.1:5000" +
                 "User-Agent: http.rb/4/3.0\r\n" + "Content-Length: 9\r\n" + "\r\nsome body"
 
-        val response = parser.parse(clientRequest)
+        val request = parser.parse(clientRequest)
 
-        assertEquals(response.httpMethod, "POST")
-        assertEquals(response.route, "/echo_body")
-        assertEquals(response.body, "some body")
+        assertEquals("POST",request.httpMethod)
+        assertEquals("/echo_body", request.route)
+        assertEquals("some body", request.body)
+    }
+
+    @Test
+    fun `when parsing an html_response from client then Request contains http method, route`() {
+        val parser = RequestParser()
+        val clientRequest = "GET /html_response HTTP/1.1\r\n" + "Connection: close\r\n" + "Host: 127.0.0.1:5000" +
+                "User-Agent: http.rb/4.3.0" + "Content-Length: 0"
+
+        val request = parser.parse(clientRequest)
+
+        assertEquals("GET", request.httpMethod)
+        assertEquals("/html_response", request.route)
     }
 }

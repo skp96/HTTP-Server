@@ -1,17 +1,17 @@
 package Actions
 
-import response.HttpResponseBuilder
-import httpstatus.HttpStatus
+import contenttype.HttpContentTypes
 import response.ResponseBuilder
 
-class RedirectAction : Action {
-    private val statusCode = HttpStatus.MovedPermanently
-    private val headers: Map<String, String> = mapOf("Location" to "http://127.0.0.1:5000/simple_get")
+class GetHTMLResponseAction : Action {
+    private val headers = mapOf("Content-Type" to HttpContentTypes.HTML.type)
+    private val responseBody = "<html><body><p>HTML Response</p></body></html>"
     private lateinit var requestBody: String
 
+
     override fun act(responseBuilder: ResponseBuilder): String {
-        responseBuilder.setStatusCode(statusCode)
         responseBuilder.setHeaders(headers)
+        responseBuilder.setBody(responseBody)
         return responseBuilder.build()
     }
 

@@ -2,12 +2,14 @@
 import Actions.*
 import java.net.ServerSocket
 import request.RequestParser
+import response.HttpResponseBuilder
 import router.Router
 
 fun main() {
     val serverSocket = ServerSocket(5000)
 
     val parser = RequestParser()
+    val responseBuilder = HttpResponseBuilder()
 
     val router = Router()
     router.addRoute("GET", "/simple_get", SimpleGetAction())
@@ -19,7 +21,8 @@ fun main() {
     router.addRoute("OPTIONS", "/method_options2", MethodOptions2Action())
     router.addRoute("GET", "/redirect", RedirectAction())
     router.addRoute("OPTIONS", "/head_request", HeadRequestAction())
+    router.addRoute("GET", "/html_response", GetHTMLResponseAction())
 
     println("Server is running on port ${serverSocket.localPort}")
-    Server(serverSocket, parser, router).start()
+    Server(serverSocket, parser, responseBuilder, router).start()
 }

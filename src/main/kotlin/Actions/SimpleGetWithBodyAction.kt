@@ -1,14 +1,15 @@
 package Actions
-import response.ResponseBuilder
+import response.HttpResponseBuilder
 import httpstatus.HttpStatus
+import response.ResponseBuilder
 
 class SimpleGetWithBodyAction : Action {
-    private val statusCode = HttpStatus.OK
     private val responseBody = "Hello world"
     private lateinit var requestBody: String
 
-    override fun action(): ResponseBuilder {
-        return ResponseBuilder(statusCode, responseBody)
+    override fun act(responseBuilder: ResponseBuilder): String {
+        responseBuilder.setBody(responseBody)
+        return responseBuilder.build()
     }
 
     override fun setBody(body: String) {
