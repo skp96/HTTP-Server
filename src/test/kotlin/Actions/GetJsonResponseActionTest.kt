@@ -15,12 +15,12 @@ class GetJsonResponseActionTest {
 
         action.act(responseBuilder)
 
-        val jsonBody = JSONObject()
-        jsonBody.put("key1", "value1")
-        jsonBody.put("key2", "value2")
+        val expectedJsonBody = JSONObject()
+        expectedJsonBody.put("key1", "value1")
+        expectedJsonBody.put("key2", "value2")
 
         assertEquals(HttpStatus.OK, responseBuilder.httpStatusCode)
         assertEquals(mapOf("Content-Type" to "application/json;charset=utf-8"), responseBuilder.httpHeaders)
-        assertEquals(jsonBody.toString(), responseBuilder.httpBody)
+        assertEquals(expectedJsonBody.toString(), responseBuilder.httpBody)
     }
 }

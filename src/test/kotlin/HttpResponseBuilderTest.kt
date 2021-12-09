@@ -80,10 +80,10 @@ class HttpResponseBuilderTest {
     fun `given json_response build response`() {
         val httpResponseBuilder = HttpResponseBuilder()
         httpResponseBuilder.setHeaders(mapOf("Content-Type" to (HttpContentTypes.JSON.type + HttpContentTypes.JSON.parameter)))
-        val jsonBody = JSONObject()
-        jsonBody.put("key1", "value1")
-        jsonBody.put("key2", "value2")
-        httpResponseBuilder.setBody(jsonBody.toString())
+        val expectedJsonBody = JSONObject()
+        expectedJsonBody.put("key1", "value1")
+        expectedJsonBody.put("key2", "value2")
+        httpResponseBuilder.setBody(expectedJsonBody.toString())
         val expectation = "HTTP/1.1 200 OK\r\nContent-Type: application/json;charset=utf-8\r\nContent-Length: 33\r\n\r\n{\"key1\":\"value1\",\"key2\":\"value2\"}"
         assertEquals(expectation, httpResponseBuilder.build())
     }
