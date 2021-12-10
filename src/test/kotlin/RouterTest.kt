@@ -1,4 +1,5 @@
 import Actions.*
+import StructuredDataGenerators.JsonGenerator
 import request.Request
 import router.Router
 import kotlin.test.*
@@ -181,6 +182,24 @@ class RouterTest {
         val request = Request("GET", "/html_response")
         val action = router.routeRequest(request)
         assertIs<GetHTMLResponseAction>(action)
+    }
+
+    @Test
+    fun `expect addRoute to add GET method and GetJsonResponseAction to json_response route`() {
+        val jsonGenerator = JsonGenerator()
+        val getJsonResponseAction = GetJsonResponseAction(jsonGenerator)
+        router.addRoute("GET", "/json_response", getJsonResponseAction)
+        val expectation: MutableMap<String, MutableMap<String, Action>> = mutableMapOf("/json_response" to mutableMapOf("GET" to getJsonResponseAction))
+        assertEquals(expectation, router.routes)
+    }
+
+    @Test
+    fun `expect routeRequest to return GetJsonResponseAction from json_response route when http method is GET`() {
+        val jsonGenerator = JsonGenerator()
+        router.addRoute("GET", "/json_response", GetJsonResponseAction(jsonGenerator))
+        val request = Request("GET", "/json_response")
+        val action = router.routeRequest(request)
+        assertIs<GetJsonResponseAction>(action)
     }
 
 }
