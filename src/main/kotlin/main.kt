@@ -1,6 +1,7 @@
 @file:JvmName("Main")
 import Actions.*
-import utilities.JsonGenerator
+import Utilities.FileIo
+import Utilities.JsonGenerator
 import java.net.ServerSocket
 import request.RequestParser
 import response.HttpResponseBuilder
@@ -12,6 +13,7 @@ fun main() {
     val parser = RequestParser()
     val responseBuilder = HttpResponseBuilder()
     val jsonGenerator = JsonGenerator()
+    val fileIo = FileIo()
 
     val router = Router()
     router.addRoute("GET", "/simple_get", SimpleGetAction())
@@ -25,7 +27,7 @@ fun main() {
     router.addRoute("OPTIONS", "/head_request", HeadRequestAction())
     router.addRoute("GET", "/html_response", GetHTMLResponseAction())
     router.addRoute("GET", "/json_response", GetJsonResponseAction(jsonGenerator))
-    router.addRoute("GET", "/health-check.html", GetHtmlHealthCheckAction())
+    router.addRoute("GET", "/health-check.html", GetHtmlHealthCheckAction(fileIo))
 
     println("Server is running on port ${serverSocket.localPort}")
     Server(serverSocket, parser, responseBuilder, router).start()

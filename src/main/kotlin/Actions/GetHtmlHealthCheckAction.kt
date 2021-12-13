@@ -1,12 +1,13 @@
 package Actions
 
+import Utilities.FileIo
 import contenttype.HttpContentTypes
 import response.ResponseBuilder
 import java.io.File
 
-class GetHtmlHealthCheckAction: Action {
+class GetHtmlHealthCheckAction(fileIo: FileIo): Action {
     private val headers = mapOf("Content-Type" to (HttpContentTypes.HTML.type + HttpContentTypes.HTML.parameter))
-    private val responseBody = readText()
+    private val responseBody = fileIo.readResource("health_check.html")
     private lateinit var requestBody: String
 
     override fun act(responseBuilder: ResponseBuilder): String {
@@ -17,11 +18,5 @@ class GetHtmlHealthCheckAction: Action {
 
     override fun setBody(body: String) {
         requestBody = body
-    }
-
-    fun readText(): String {
-        val file = File("src/assets/health_check.html")
-        val contents = file.readText(Charsets.UTF_8)
-        return contents
     }
 }

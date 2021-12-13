@@ -1,6 +1,6 @@
 package Actions
 
-import utilities.JsonGenerator
+import Utilities.JsonGenerator
 import contenttype.HttpContentTypes
 import response.ResponseBuilder
 

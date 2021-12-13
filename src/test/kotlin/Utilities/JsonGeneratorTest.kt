@@ -2,7 +2,6 @@ package Utilities
 
 import kotlin.test.*
 import org.json.JSONObject
-import utilities.JsonGenerator
 
 class JsonGeneratorTest {
     @Test
