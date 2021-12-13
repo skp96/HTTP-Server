@@ -1,12 +1,12 @@
 package Actions
 
-import utilities.JsonGenerator
 import contenttype.HttpContentTypes
 import response.ResponseBuilder
+import java.io.File
 
-class GetJsonResponseAction(jsonGenerator: JsonGenerator) : Action {
-    private val headers = mapOf("Content-Type" to (HttpContentTypes.JSON.type + HttpContentTypes.JSON.parameter))
-    private val responseBody = jsonGenerator.generateJsonString(mapOf("key1" to "value1", "key2" to "value2"))
+class GetHtmlHealthCheckAction: Action {
+    private val headers = mapOf("Content-Type" to (HttpContentTypes.HTML.type + HttpContentTypes.HTML.parameter))
+    private val responseBody = readText()
     private lateinit var requestBody: String
 
     override fun act(responseBuilder: ResponseBuilder): String {
@@ -17,5 +17,11 @@ class GetJsonResponseAction(jsonGenerator: JsonGenerator) : Action {
 
     override fun setBody(body: String) {
         requestBody = body
+    }
+
+    fun readText(): String {
+        val file = File("src/assets/health_check.html")
+        val contents = file.readText(Charsets.UTF_8)
+        return contents
     }
 }

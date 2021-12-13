@@ -1,6 +1,6 @@
 @file:JvmName("Main")
 import Actions.*
-import StructuredDataGenerators.JsonGenerator
+import utilities.JsonGenerator
 import java.net.ServerSocket
 import request.RequestParser
 import response.HttpResponseBuilder
@@ -25,6 +25,7 @@ fun main() {
     router.addRoute("OPTIONS", "/head_request", HeadRequestAction())
     router.addRoute("GET", "/html_response", GetHTMLResponseAction())
     router.addRoute("GET", "/json_response", GetJsonResponseAction(jsonGenerator))
+    router.addRoute("GET", "/health-check.html", GetHtmlHealthCheckAction())
 
     println("Server is running on port ${serverSocket.localPort}")
     Server(serverSocket, parser, responseBuilder, router).start()

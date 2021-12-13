@@ -1,4 +1,4 @@
-package StructuredDataGenerators
+package utilities
 
 import org.json.JSONObject
 

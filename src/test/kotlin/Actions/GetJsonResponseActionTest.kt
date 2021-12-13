@@ -1,6 +1,6 @@
 package Actions
 
-import StructuredDataGenerators.JsonGenerator
+import utilities.JsonGenerator
 import httpstatus.HttpStatus
 import mocks.HTTPResponseBuilderMock
 import org.json.JSONObject
