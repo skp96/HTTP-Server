@@ -1,4 +1,4 @@
-package StructuredDataGenerators
+package Utilities
 
 import kotlin.test.*
 import org.json.JSONObject

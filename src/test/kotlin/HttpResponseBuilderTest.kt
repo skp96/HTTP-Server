@@ -87,4 +87,25 @@ class HttpResponseBuilderTest {
         val expectation = "HTTP/1.1 200 OK\r\nContent-Type: application/json;charset=utf-8\r\nContent-Length: 33\r\n\r\n{\"key1\":\"value1\",\"key2\":\"value2\"}"
         assertEquals(expectation, httpResponseBuilder.build())
     }
+
+    @Test
+    fun `given health-check build response`() {
+        val httpResponseBuilder = HttpResponseBuilder()
+        httpResponseBuilder.setHeaders(mapOf("Content-Type" to (HttpContentTypes.HTML.type + HttpContentTypes.HTML.parameter)))
+        val responseBody = "<!doctype>\n" +
+                "<html lang=\"en-US\">\n" +
+                "<head>\n" +
+                "  <title>TODO List</title>\n" +
+                "</head>\n" +
+                "\n" +
+                "<body>\n" +
+                "<main>\n" +
+                "  <strong>Status:</strong> pass\n" +
+                "</main>\n" +
+                "</body>\n" +
+                "</html>\n"
+        httpResponseBuilder.setBody(responseBody)
+        val expectedResult = "HTTP/1.1 200 OK\r\nContent-Type: text/html;charset=utf-8\r\nContent-Length: 144\r\n\r\n${responseBody}"
+        assertEquals(expectedResult, httpResponseBuilder.build())
+    }
 }

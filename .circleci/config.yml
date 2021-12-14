@@ -140,7 +140,7 @@ jobs:
           name: run acceptance tests
           working_directory: ~/repo/http_server_spec
           command: |
-            bundle exec spinach --tags @simple-get,@simple-head,@simple-post,@simple-options,@simple-redirect,@method-not-allowed,@page-not-found,
+            bundle exec spinach --tags @simple-get,@simple-head,@simple-post,@simple-options,@simple-redirect,@method-not-allowed,@page-not-found,@health-check
             bundle exec spinach features/02_structured_data/structured_data.feature:10
             bundle exec spinach features/02_structured_data/structured_data.feature:16
 

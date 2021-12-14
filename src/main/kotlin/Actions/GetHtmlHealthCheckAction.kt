@@ -1,12 +1,13 @@
 package Actions
 
-import Utilities.JsonGenerator
+import Utilities.FileIo
 import contenttype.HttpContentTypes
 import response.ResponseBuilder
+import java.io.File
 
-class GetJsonResponseAction(jsonGenerator: JsonGenerator) : Action {
-    private val headers = mapOf("Content-Type" to (HttpContentTypes.JSON.type + HttpContentTypes.JSON.parameter))
-    private val responseBody = jsonGenerator.generateJsonString(mapOf("key1" to "value1", "key2" to "value2"))
+class GetHtmlHealthCheckAction(fileIo: FileIo): Action {
+    private val headers = mapOf("Content-Type" to (HttpContentTypes.HTML.type + HttpContentTypes.HTML.parameter))
+    private val responseBody = fileIo.readResource("health_check.html")
     private lateinit var requestBody: String
 
     override fun act(responseBuilder: ResponseBuilder): String {
