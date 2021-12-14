@@ -1,3 +1,4 @@
+import HttpServerErrors.HttpServerError
 import router.Router
 import request.RequestParser
 import response.ResponseBuilder
@@ -11,7 +12,8 @@ import java.net.Socket
 class Server(private val serverSocket: ServerSocket,
              private val parser: RequestParser,
              private val responseBuilder: ResponseBuilder,
-             private val router: Router) {
+             private val router: Router,
+             private val serverError: HttpServerError) {
 
     private lateinit var socket: Socket
     private lateinit var reader: BufferedReader
@@ -31,6 +33,8 @@ class Server(private val serverSocket: ServerSocket,
                 writeResponse(response)
             } catch (e: Exception) {
                 println("Something went wrong: ${e.message}")
+                val response = serverError.handleError(responseBuilder)
+                writeResponse(response)
             } finally {
                 closeConnection()
             }

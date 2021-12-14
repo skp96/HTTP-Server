@@ -1,20 +1,20 @@
 @file:JvmName("Main")
 import Actions.*
+import HttpServerErrors.InternalServerError
 import Utilities.FileIo
 import Utilities.JsonGenerator
 import java.net.ServerSocket
 import request.RequestParser
 import response.HttpResponseBuilder
 import router.Router
-import servererror.ServerError
 
 fun main() {
     val serverSocket = ServerSocket(5000)
 
     val parser = RequestParser()
     val responseBuilder = HttpResponseBuilder()
-    val serverError = ServerError()
     val jsonGenerator = JsonGenerator()
+    val serverError = InternalServerError()
     val fileIo = FileIo()
 
     val router = Router()
@@ -29,8 +29,8 @@ fun main() {
     router.addRoute("OPTIONS", "/head_request", HeadRequestAction())
     router.addRoute("GET", "/html_response", GetHTMLResponseAction())
     router.addRoute("GET", "/json_response", GetJsonResponseAction(jsonGenerator))
-    router.addRoute("GET", "/health-check.html", GetHtmlHealthCheckAction(serverError, fileIo))
+    router.addRoute("GET", "/health-check.html", GetHtmlHealthCheckAction(fileIo))
 
     println("Server is running on port ${serverSocket.localPort}")
-    Server(serverSocket, parser, responseBuilder, router).start()
+    Server(serverSocket, parser, responseBuilder, router, serverError).start()
 }

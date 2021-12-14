@@ -3,15 +3,13 @@ package Actions
 import Utilities.FileIo
 import httpstatus.HttpStatus
 import mocks.HTTPResponseBuilderMock
-import servererror.ServerError
 import kotlin.test.*
 
 internal class GetHtmlHealthCheckActionTest {
     @Test
     fun `act method sets the correct properties on ResponseBuilder`() {
         val fileIo = FileIo()
-        val serverError = ServerError()
-        val action = GetHtmlHealthCheckAction(serverError, fileIo)
+        val action = GetHtmlHealthCheckAction(fileIo)
         val responseBuilder = HTTPResponseBuilderMock()
 
         action.act(responseBuilder)
