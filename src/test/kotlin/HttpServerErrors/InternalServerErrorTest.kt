@@ -1,14 +1,17 @@
+package HttpServerErrors
+
 import httpstatus.HttpStatus
 import mocks.HTTPResponseBuilderMock
 import kotlin.test.*
+import HttpServerErrors.InternalServerError
 
-class ServerErrorTest {
+class InternalServerErrorTest {
     @Test
     fun `handleError sets the correct properties on ResponseBuilder`() {
         val responseBuilder = HTTPResponseBuilderMock()
-        val serverError = ServerError()
+        val internalServerError = InternalServerError()
 
-        serverError.handleError(responseBuilder)
+        internalServerError.handleError(responseBuilder)
 
         assertEquals(HttpStatus.ServerError, responseBuilder.httpStatusCode)
     }

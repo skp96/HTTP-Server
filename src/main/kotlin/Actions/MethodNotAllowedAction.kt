@@ -4,12 +4,11 @@ import httpstatus.HttpStatus
 import response.ResponseBuilder
 
 class MethodNotAllowedAction(private val allowedMethods: MutableSet<String>) : Action {
-    private val statusCode = HttpStatus.MethodNotAllowed
     private lateinit var requestBody: String
-    private lateinit var headers: Map<String, String>
 
     override fun act(responseBuilder: ResponseBuilder): String {
-        generateAllowHeader()
+        val headers = generateAllowHeader()
+        val statusCode = HttpStatus.MethodNotAllowed
         responseBuilder.setStatusCode(statusCode)
         responseBuilder.setHeaders(headers)
         return responseBuilder.build()
@@ -19,12 +18,12 @@ class MethodNotAllowedAction(private val allowedMethods: MutableSet<String>) : A
         requestBody = body
     }
 
-    private fun generateAllowHeader() {
+    private fun generateAllowHeader(): Map<String, String> {
         val headerValues = mutableListOf<String>()
 
         for (methods in allowedMethods) {
             headerValues += methods
         }
-        headers = mapOf("Allow" to headerValues.joinToString())
+        return mapOf("Allow" to headerValues.joinToString())
     }
 }

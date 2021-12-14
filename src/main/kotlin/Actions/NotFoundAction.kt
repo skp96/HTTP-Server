@@ -3,10 +3,10 @@ import httpstatus.HttpStatus
 import response.ResponseBuilder
 
 class NotFoundAction : Action {
-    val statusCode = HttpStatus.NotFound
     private lateinit var requestBody: String
 
     override fun act(responseBuilder: ResponseBuilder): String {
+        val statusCode = HttpStatus.NotFound
         responseBuilder.setStatusCode(statusCode)
         return responseBuilder.build()
     }

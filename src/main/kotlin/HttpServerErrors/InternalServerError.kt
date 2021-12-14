@@ -1,8 +1,9 @@
+package HttpServerErrors
 import httpstatus.HttpStatus
 import response.ResponseBuilder
 
-class ServerError {
-    fun handleError(responseBuilder: ResponseBuilder): String {
+class InternalServerError : HttpServerError {
+    override fun handleError(responseBuilder: ResponseBuilder): String {
         responseBuilder.setStatusCode(HttpStatus.ServerError)
         return responseBuilder.build()
     }

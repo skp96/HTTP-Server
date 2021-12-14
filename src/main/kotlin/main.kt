@@ -6,12 +6,14 @@ import java.net.ServerSocket
 import request.RequestParser
 import response.HttpResponseBuilder
 import router.Router
+import servererror.ServerError
 
 fun main() {
     val serverSocket = ServerSocket(5000)
 
     val parser = RequestParser()
     val responseBuilder = HttpResponseBuilder()
+    val serverError = ServerError()
     val jsonGenerator = JsonGenerator()
     val fileIo = FileIo()
 
@@ -27,7 +29,7 @@ fun main() {
     router.addRoute("OPTIONS", "/head_request", HeadRequestAction())
     router.addRoute("GET", "/html_response", GetHTMLResponseAction())
     router.addRoute("GET", "/json_response", GetJsonResponseAction(jsonGenerator))
-    router.addRoute("GET", "/health-check.html", GetHtmlHealthCheckAction(fileIo))
+    router.addRoute("GET", "/health-check.html", GetHtmlHealthCheckAction(serverError, fileIo))
 
     println("Server is running on port ${serverSocket.localPort}")
     Server(serverSocket, parser, responseBuilder, router).start()
