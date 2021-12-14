@@ -3,20 +3,22 @@ import kotlin.test.*
 
 class FileIoTest {
     @Test
-    fun `readFile is able to read from html file`() {
+    fun `readFile is able to read from a file`() {
         val fileIo = FileIo()
-        val expectedResult = "<!doctype>\n" +
-                "<html lang=\"en-US\">\n" +
-                "<head>\n" +
-                "    <title>TODO List</title>\n" +
-                "</head>\n" +
-                "\n" +
-                "<body>\n" +
-                "<main>\n" +
-                "    <strong>Status:</strong> pass\n" +
-                "</main>\n" +
-                "</body>\n" +
-                "</html>\n"
-        assertEquals(expectedResult, fileIo.readResource("test-html.html"))
+        val expectedResult = "Test\nFile\n"
+        assertEquals(expectedResult, fileIo.readResource("test-file.txt"))
+    }
+
+    @Test
+    fun `readFile returns no contents from an empty file`() {
+        val fileIo = FileIo()
+        val expectedResult = ""
+        assertEquals(expectedResult, fileIo.readResource("empty-file.txt"))
+    }
+
+    @Test
+    fun `readFile throws an error when file does not exist`() {
+        val fileIo = FileIo()
+        assertFailsWith<NullPointerException> { fileIo.readResource("no-file.csv") }
     }
 }
