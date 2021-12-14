@@ -6,10 +6,10 @@ import response.ResponseBuilder
 import java.io.File
 
 class GetHtmlHealthCheckAction(private val fileIo: FileIo): Action {
+    private val headers = mapOf("Content-Type" to (HttpContentTypes.HTML.type + HttpContentTypes.HTML.parameter))
     private lateinit var requestBody: String
 
     override fun act(responseBuilder: ResponseBuilder): String {
-        val headers = mapOf("Content-Type" to (HttpContentTypes.HTML.type + HttpContentTypes.HTML.parameter))
         val responseBody = fileIo.readResource("health_check.html")
         responseBuilder.setHeaders(headers)
         responseBuilder.setBody(responseBody)
