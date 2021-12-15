@@ -28,6 +28,7 @@ fun main() {
     router.addRoute("GET", "/html_response", GetHTMLResponseAction())
     router.addRoute("GET", "/json_response", GetJsonResponseAction(jsonGenerator))
     router.addRoute("GET", "/health-check.html", GetHtmlHealthCheckAction(fileIo))
+    router.addRoute("GET", "/xml_response", GetXmlResponseAction())
 
     println("Server is running on port ${serverSocket.localPort}")
     Server(serverSocket, parser, responseBuilder, router).start()
