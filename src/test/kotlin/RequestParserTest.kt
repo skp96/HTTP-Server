@@ -90,4 +90,15 @@ class RequestParserTest {
         assertEquals("GET", request.httpMethod)
         assertEquals("/health-check.html", request.route)
     }
+
+    @Test
+    fun `when parsing xml_response from client then Request contains http method, route`() {
+        val parser = RequestParser()
+        val clientRequest = "GET /xml_response HTTP/1.1\r\n" + "Connection: close\r\n" + "Host: 127.0.0.1:5000" +
+                "User-Agent: http.rb/4.3.0" + "Content-Length: 0"
+
+        val request = parser.parse(clientRequest)
+        assertEquals("GET", request.httpMethod)
+        assertEquals("/xml_response", request.route)
+    }
 }
