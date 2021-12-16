@@ -3,7 +3,6 @@ import kotlin.test.*
 import response.HttpResponseBuilder
 import httpstatus.HttpStatus
 import org.json.JSONObject
-import kotlin.math.exp
 
 class HttpResponseBuilderTest {
     @Test
