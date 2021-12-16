@@ -1,5 +1,6 @@
 @file:JvmName("Main")
 import Actions.*
+import HttpServerErrors.InternalServerError
 import Utilities.FileIo
 import Utilities.JsonGenerator
 import java.net.ServerSocket
@@ -13,6 +14,7 @@ fun main() {
     val parser = RequestParser()
     val responseBuilder = HttpResponseBuilder()
     val jsonGenerator = JsonGenerator()
+    val serverError = InternalServerError()
     val fileIo = FileIo()
 
     val router = Router()
@@ -31,5 +33,5 @@ fun main() {
     router.addRoute("GET", "/xml_response", GetXmlResponseAction())
 
     println("Server is running on port ${serverSocket.localPort}")
-    Server(serverSocket, parser, responseBuilder, router).start()
+    Server(serverSocket, parser, responseBuilder, router, serverError).start()
 }

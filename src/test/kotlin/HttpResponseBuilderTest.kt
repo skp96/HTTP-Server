@@ -3,7 +3,6 @@ import kotlin.test.*
 import response.HttpResponseBuilder
 import httpstatus.HttpStatus
 import org.json.JSONObject
-import kotlin.math.exp
 
 class HttpResponseBuilderTest {
     @Test
@@ -107,6 +106,15 @@ class HttpResponseBuilderTest {
                 "</html>\n"
         httpResponseBuilder.setBody(responseBody)
         val expectedResult = "HTTP/1.1 200 OK\r\nContent-Type: text/html;charset=utf-8\r\nContent-Length: 144\r\n\r\n${responseBody}"
+        assertEquals(expectedResult, httpResponseBuilder.build())
+    }
+
+    @Test
+    fun `given a server error build response`() {
+        val httpResponseBuilder = HttpResponseBuilder()
+        httpResponseBuilder.setStatusCode(HttpStatus.ServerError)
+
+        val expectedResult = "HTTP/1.1 500 Internal Server Error\r\n"
         assertEquals(expectedResult, httpResponseBuilder.build())
     }
 
