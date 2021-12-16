@@ -218,4 +218,20 @@ class RouterTest {
         assertIs<GetHTMLResponseAction>(action)
     }
 
+    @Test
+    fun `expect addRoute to add GET method and GetXmlResponseAction to xml_response route`() {
+        val getXmlResponseAction = GetXmlResponseAction()
+        router.addRoute("GET", "/xml_response", getXmlResponseAction)
+        val expectation: MutableMap<String, MutableMap<String, Action>> = mutableMapOf("/xml_response" to mutableMapOf("GET" to getXmlResponseAction))
+        assertEquals(expectation, router.routes)
+    }
+
+    @Test
+    fun `expect routeRequest to return GetXmlResponseAction from xml_response route when http method is GET`() {
+        router.addRoute("GET", "/xml_response", GetXmlResponseAction())
+        val request = Request("GET", "/xml_response")
+        val action = router.routeRequest(request)
+        assertIs<GetXmlResponseAction>(action)
+    }
+
 }
