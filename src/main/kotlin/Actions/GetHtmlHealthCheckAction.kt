@@ -10,7 +10,7 @@ class GetHtmlHealthCheckAction(private val fileIo: FileIo): Action {
     private lateinit var requestBody: String
 
     override fun act(responseBuilder: ResponseBuilder): String {
-        val responseBody = fileIo.readResource("health_check.html")
+        val responseBody = fileIo.readResource("src/main/resources/health_check.html")
         responseBuilder.setHeaders(headers)
         responseBuilder.setBody(responseBody)
         return responseBuilder.build()
