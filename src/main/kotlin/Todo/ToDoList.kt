@@ -1,17 +1,17 @@
 package Todo
 
 import Utilities.FileInterface
-import Utilities.FileIo
 import Utilities.JsonGenerator
 import java.io.FileNotFoundException
 
 class ToDoList(private val filePath: String, private val fileIo: FileInterface, private val jsonGenerator: JsonGenerator) {
 
-    fun addTask(task: Task) {
+    fun addTask(task: Task): String {
         val taskId = calculateId()
         task.setId(taskId)
         val jsonTask = jsonGenerator.resourceToJson(task)
         fileIo.writeResource(filePath, jsonTask)
+        return task.body
     }
 
     fun retrieveList(): List<String> {
@@ -25,10 +25,10 @@ class ToDoList(private val filePath: String, private val fileIo: FileInterface, 
 
     private fun calculateId(): Int {
         val listOfTasks = retrieveList()
-        if (listOfTasks.isEmpty()) {
-            return 1
+        return if (listOfTasks.isEmpty()) {
+            1
         } else {
-            return listOfTasks.size
+            listOfTasks.size
         }
     }
 }

@@ -13,10 +13,12 @@ class ToDoListTest {
     @Test
     fun `expect addTask to add task to file`() {
         val task = Task("test body")
-        toDoList.addTask(task)
+        val result = toDoList.addTask(task)
         val list = fileIo.readResource("src/test/kotlin/resources/test-task-list.txt")
         val expectedTask = """{"body":"test body","id":1}"""
         assertEquals(true, list.contains(expectedTask))
+        assertEquals("test body", result)
+
     }
 
     @Test
