@@ -1,6 +1,8 @@
 @file:JvmName("Main")
 import Actions.*
 import HttpServerErrors.InternalServerError
+import Todo.ToDo
+import Todo.ToDoList
 import Utilities.FileIo
 import Utilities.JsonGenerator
 import java.net.ServerSocket
@@ -16,6 +18,9 @@ fun main() {
     val jsonGenerator = JsonGenerator()
     val serverError = InternalServerError()
     val fileIo = FileIo()
+    val filepath = "src/main/kotlin/resources/task-list.txt"
+    val todoList = ToDoList(filepath, fileIo, jsonGenerator)
+    val todo = ToDo(todoList)
 
     val router = Router()
     router.addRoute("GET", "/simple_get", SimpleGetAction())
@@ -31,6 +36,7 @@ fun main() {
     router.addRoute("GET", "/json_response", GetJsonResponseAction(jsonGenerator))
     router.addRoute("GET", "/health-check.html", GetHtmlHealthCheckAction(fileIo))
     router.addRoute("GET", "/xml_response", GetXmlResponseAction())
+    router.addRoute("POST", "/todo", CreateToDoAction(todo))
 
     println("Server is running on port ${serverSocket.localPort}")
     Server(serverSocket, parser, responseBuilder, router, serverError).start()

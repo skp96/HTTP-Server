@@ -23,7 +23,7 @@ class CreateToDoActionTest {
 
         val expectedResponseBody = """{"task":"a new task"}"""
 
-        assertEquals(HttpStatus.OK, responseBuilder.httpStatusCode)
+        assertEquals(HttpStatus.Created, responseBuilder.httpStatusCode)
         assertEquals(mapOf("Content-Type" to "application/json;charset=utf-8"), responseBuilder.httpHeaders)
         assertEquals(expectedResponseBody, responseBuilder.httpBody)
     }
