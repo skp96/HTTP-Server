@@ -1,0 +1,15 @@
+package mocks
+
+import Utilities.FileInterface
+
+class FileIoMock : FileInterface {
+    private var file = ""
+
+    override fun readResource(filePath: String): String {
+        return file
+    }
+
+    override fun writeResource(filePath: String, resource: String) {
+        file += (resource + "\n")
+    }
+}
