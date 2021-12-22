@@ -1,5 +1,8 @@
 import Actions.*
+import Todo.ToDo
+import Todo.ToDoList
 import Utilities.JsonGenerator
+import mocks.FileIoMock
 import request.Request
 import router.Router
 import kotlin.test.*
@@ -232,6 +235,35 @@ class RouterTest {
         val request = Request("GET", "/xml_response")
         val action = router.routeRequest(request)
         assertIs<GetXmlResponseAction>(action)
+    }
+
+    @Test
+    fun `expect addRoute to add POST method and CreateToDoAction to to-do route`() {
+        val fileIo = FileIoMock()
+        val jsonGenerator = JsonGenerator()
+        val filePath = "src/test/kotlin/resources/test-task-list.txt"
+        val toDoList = ToDoList(filePath, fileIo, jsonGenerator)
+        val toDo = ToDo(toDoList)
+        val createToDoAction = CreateToDoAction(toDo)
+
+        router.addRoute("POST", "/todo", createToDoAction)
+        val expectation: MutableMap<String, MutableMap<String, Action>> = mutableMapOf("/todo" to mutableMapOf("POST" to createToDoAction))
+        assertEquals(expectation, router.routes)
+    }
+
+    @Test
+    fun `expect routeRequest to return CreateToDoAction from to-do route when http method is POST`() {
+        val fileIo = FileIoMock()
+        val jsonGenerator = JsonGenerator()
+        val filePath = "src/test/kotlin/resources/test-task-list.txt"
+        val toDoList = ToDoList(filePath, fileIo, jsonGenerator)
+        val toDo = ToDo(toDoList)
+        val createToDoAction = CreateToDoAction(toDo)
+
+        router.addRoute("POST", "/todo", createToDoAction)
+        val request = Request("POST", "/todo")
+        val action = router.routeRequest(request)
+        assertIs<CreateToDoAction>(action)
     }
 
 }

@@ -144,6 +144,7 @@ jobs:
             bundle exec spinach features/02_structured_data/structured_data.feature:10
             bundle exec spinach features/02_structured_data/structured_data.feature:16
             bundle exec spinach features/02_structured_data/structured_data.feature:22
+            bundle exec spinach features/04_todo_list/create_todo.feature:4
 
 
       - run:

@@ -101,4 +101,15 @@ class RequestParserTest {
         assertEquals("GET", request.httpMethod)
         assertEquals("/xml_response", request.route)
     }
+
+    @Test
+    fun `when parsing todo request from client then Request contains http method, route, and body`() {
+        val parser = RequestParser()
+        val clientRequest = "POST /todo HTTP/1.1\r\n" + "Connection: close\r\n" + "Host: 127.0.0.1:5000\r\n" +
+                "User-Agent: http.rb/4.3.0\r\n" + "Content-Length: 21\r\n" + "\r\n{\"task\":\"a new task\"}"
+        val request = parser.parse(clientRequest)
+        assertEquals("POST", request.httpMethod)
+        assertEquals("/todo", request.route)
+        assertEquals("{\"task\":\"a new task\"}", request.body)
+    }
 }
