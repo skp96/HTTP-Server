@@ -1,6 +1,6 @@
 @file:JvmName("Main")
 import Actions.*
-import HttpServerErrors.InternalServerError
+import Errors.InternalServerError
 import Todo.ToDo
 import Todo.ToDoList
 import Utilities.FileIo
