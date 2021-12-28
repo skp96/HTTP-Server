@@ -3,13 +3,14 @@ package Actions
 import Todo.ToDo
 import contenttype.HttpContentTypes
 import httpstatus.HttpStatus
+import request.Request
 import response.ResponseBuilder
 
 class CreateToDoAction(private val toDo: ToDo): Action {
     private val headers = mapOf("Content-Type" to (HttpContentTypes.JSON.type + HttpContentTypes.JSON.parameter))
     private lateinit var requestBody: String
 
-    override fun act(responseBuilder: ResponseBuilder): String {
+    override fun act(responseBuilder: ResponseBuilder, request: Request): String {
         val responseBody = toDo.createToDo(requestBody)
         responseBuilder.setBody(responseBody)
         responseBuilder.setHeaders(headers)
