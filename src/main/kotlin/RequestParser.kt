@@ -8,13 +8,13 @@ class RequestParser {
     fun parse(clientRequest: String): Request {
         requestComponents = clientRequest.split("\r\n").toList()
         extractRequestLine()
-
+        val httpHeaders = extractHeaders()
         if (containsBody()) {
             val body = requestComponents.last()
-            return Request(httpMethod, route, body)
+            return Request(httpMethod, route, httpHeaders, body)
         }
 
-        return Request(httpMethod, route)
+        return Request(httpMethod, route, httpHeaders)
     }
 
     private fun extractRequestLine() {
@@ -24,11 +24,25 @@ class RequestParser {
     }
 
     private fun containsBody(): Boolean {
-        for (components in requestComponents) {
-            if (components.contains("Content-Length")) {
+        for (component in requestComponents) {
+            if (component.contains("Content-Length")) {
                 return true
             }
         }
         return false
+    }
+
+    private fun extractHeaders(): MutableMap<String, String> {
+        val httpHeaders: MutableMap<String, String> = mutableMapOf()
+        for (component_idx in 0 until requestComponents.size - 1) {
+            val component = requestComponents[component_idx]
+            if (component.contains(":")) {
+                val separatorIdx = component.indexOf(":")
+                val headerKey = component.substring(0, separatorIdx)
+                val headerValue = component.substring(separatorIdx + 1, component.length)
+                httpHeaders[headerKey.trim()] = headerValue.trim()
+            }
+        }
+        return httpHeaders
     }
 }
