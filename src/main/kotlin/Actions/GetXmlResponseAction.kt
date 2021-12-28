@@ -1,6 +1,7 @@
 package Actions
 
 import contenttype.HttpContentTypes
+import request.Request
 import response.ResponseBuilder
 
 class GetXmlResponseAction : Action {
@@ -8,7 +9,7 @@ class GetXmlResponseAction : Action {
     private val responseBody = "<note><body>XML Response</body></note>"
     private lateinit var requestBody: String
 
-    override fun act(responseBuilder: ResponseBuilder): String {
+    override fun act(responseBuilder: ResponseBuilder, request: Request): String {
         responseBuilder.setHeaders(headers)
         responseBuilder.setBody(responseBody)
         return responseBuilder.build()

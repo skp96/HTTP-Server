@@ -28,7 +28,7 @@ class Server(private val serverSocket: ServerSocket,
 
                 val request = parser.parse(clientRequest)
                 val action = router.routeRequest(request)
-                val response = action.act(responseBuilder)
+                val response = action.act(responseBuilder, request)
 
                 writeResponse(response)
             } catch (e: Exception) {
