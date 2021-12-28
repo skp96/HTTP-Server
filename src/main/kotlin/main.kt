@@ -18,7 +18,7 @@ fun main() {
     val jsonGenerator = JsonGenerator()
     val serverError = InternalServerError()
     val fileIo = FileIo()
-    val filepath = "src/main/kotlin/resources/test-task-list.txt"
+    val filepath = "src/main/kotlin/resources/task-list.txt"
     val todoList = ToDoList(filepath, fileIo, jsonGenerator)
     val todo = ToDo(todoList)
 

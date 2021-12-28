@@ -12,7 +12,6 @@ repositories {
 
 dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test:1.6.0'
-    implementation 'org.json:json:20171018'
     implementation 'com.google.code.gson:gson:2.8.9'
 }
 

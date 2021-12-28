@@ -3,7 +3,6 @@ package Actions
 import Utilities.JsonGenerator
 import httpstatus.HttpStatus
 import mocks.HTTPResponseBuilderMock
-import org.json.JSONObject
 import kotlin.test.*
 
 class GetJsonResponseActionTest {
@@ -15,12 +14,10 @@ class GetJsonResponseActionTest {
 
         action.act(responseBuilder)
 
-        val expectedJsonBody = JSONObject()
-        expectedJsonBody.put("key1", "value1")
-        expectedJsonBody.put("key2", "value2")
+        val expectedJsonBody = """{"key1":"value1","key2":"value2"}"""
 
         assertEquals(HttpStatus.OK, responseBuilder.httpStatusCode)
         assertEquals(mapOf("Content-Type" to "application/json;charset=utf-8"), responseBuilder.httpHeaders)
-        assertEquals(expectedJsonBody.toString(), responseBuilder.httpBody)
+        assertEquals(expectedJsonBody, responseBuilder.httpBody)
     }
 }

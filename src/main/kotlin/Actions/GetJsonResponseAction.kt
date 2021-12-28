@@ -9,7 +9,7 @@ class GetJsonResponseAction(private val jsonGenerator: JsonGenerator) : Action {
     private lateinit var requestBody: String
 
     override fun act(responseBuilder: ResponseBuilder): String {
-        val responseBody = jsonGenerator.generateJsonString(mapOf("key1" to "value1", "key2" to "value2"))
+        val responseBody = jsonGenerator.resourceToJson(mapOf("key1" to "value1", "key2" to "value2"))
         responseBuilder.setHeaders(headers)
         responseBuilder.setBody(responseBody)
         return responseBuilder.build()
