@@ -1,4 +1,4 @@
-import HttpServerErrors.HttpServerError
+import Errors.Error
 import router.Router
 import request.RequestParser
 import response.ResponseBuilder
@@ -13,7 +13,8 @@ class Server(private val serverSocket: ServerSocket,
              private val parser: RequestParser,
              private val responseBuilder: ResponseBuilder,
              private val router: Router,
-             private val serverError: HttpServerError) {
+             private val serverError: Error
+) {
 
     private lateinit var socket: Socket
     private lateinit var reader: BufferedReader
