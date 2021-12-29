@@ -1,6 +1,5 @@
 package Actions
 
-import Todo.ToDo
 import Todo.ToDoList
 import Utilities.JsonGenerator
 import httpstatus.HttpStatus
@@ -14,8 +13,7 @@ class CreateToDoActionTest {
     private val jsonGenerator = JsonGenerator()
     private val filePath = "src/test/kotlin/resources/test-task-list.txt"
     private val toDoList = ToDoList(filePath, fileIo, jsonGenerator)
-    private val toDo = ToDo(toDoList)
-    private val createToDoAction = CreateToDoAction(toDo)
+    private val createToDoAction = CreateToDoAction(toDoList)
     private val responseBuilder = HTTPResponseBuilderMock()
 
     @Test

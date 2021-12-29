@@ -1,5 +1,4 @@
 import Actions.*
-import Todo.ToDo
 import Todo.ToDoList
 import Utilities.JsonGenerator
 import mocks.FileIoMock
@@ -243,8 +242,7 @@ class RouterTest {
         val jsonGenerator = JsonGenerator()
         val filePath = "src/test/kotlin/resources/test-task-list.txt"
         val toDoList = ToDoList(filePath, fileIo, jsonGenerator)
-        val toDo = ToDo(toDoList)
-        val createToDoAction = CreateToDoAction(toDo)
+        val createToDoAction = CreateToDoAction(toDoList)
 
         router.addRoute("POST", "/todo", createToDoAction)
         val expectation: MutableMap<String, MutableMap<String, Action>> = mutableMapOf("/todo" to mutableMapOf("POST" to createToDoAction))
@@ -257,8 +255,7 @@ class RouterTest {
         val jsonGenerator = JsonGenerator()
         val filePath = "src/test/kotlin/resources/test-task-list.txt"
         val toDoList = ToDoList(filePath, fileIo, jsonGenerator)
-        val toDo = ToDo(toDoList)
-        val createToDoAction = CreateToDoAction(toDo)
+        val createToDoAction = CreateToDoAction(toDoList)
 
         router.addRoute("POST", "/todo", createToDoAction)
         val request = Request("POST", "/todo")

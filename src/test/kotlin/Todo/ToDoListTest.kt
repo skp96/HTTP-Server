@@ -12,25 +12,25 @@ class ToDoListTest {
 
     @Test
     fun `expect addTask to add task to file`() {
-        val task = Task("test body")
-        val result = toDoList.addTask(task)
-        val list = fileIo.readResource("src/test/kotlin/resources/test-task-list.txt")
-        val expectedTask = """{"body":"test body","id":1}"""
+        val requestBody = """{"task": "test body"}"""
+        val result = toDoList.addTask(requestBody)
+        val list = fileIo.readResource(filePath)
+        val expectedTask = """{"id":1,"body":"test body"}"""
         assertEquals(true, list.contains(expectedTask))
-        assertEquals("test body", result)
+        assertEquals(true, result)
 
     }
 
     @Test
     fun `expect retrieveList to return a List of tasks`() {
-        val task1 = Task("test body1")
-        val task2 = Task("test body2")
+        val task1 = """{"task": "test body1"}"""
+        val task2 = """{"task": "test body2"}"""
 
         toDoList.addTask(task1)
         toDoList.addTask(task2)
 
         val result = toDoList.retrieveList()
-        val expectedResult = listOf("""{"body":"test body1","id":1}""", """{"body":"test body2","id":2}""", "")
+        val expectedResult = listOf("""{"id":1,"body":"test body1"}""", """{"id":2,"body":"test body2"}""", "")
         assertEquals(expectedResult, result)
     }
 }
