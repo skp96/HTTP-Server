@@ -2,25 +2,23 @@ package Actions
 
 import Errors.BadRequestError
 import Errors.UnsupportedMediaError
-import Todo.ToDo
-import Utilities.JsonGenerator
+import Todo.ToDoList
 import contenttype.HttpContentTypes
 import httpstatus.HttpStatus
 import request.Request
 import response.ResponseBuilder
 
-class CreateToDoAction(private val toDo: ToDo): Action {
+class CreateToDoAction(private val toDoList: ToDoList): Action {
     private val headers = mapOf("Content-Type" to (HttpContentTypes.JSON.type + HttpContentTypes.JSON.parameter))
     private lateinit var requestBody: String
 
     override fun act(responseBuilder: ResponseBuilder, request: Request): String {
-        return if (validContentType(request) && validBody(request)) {
-            val responseBody = toDo.createToDo(requestBody)
-            responseBuilder.setBody(responseBody)
+        return if (validContentType(request) && validBody(request) && toDoList.addTask(requestBody)) {
+            responseBuilder.setBody(requestBody)
             responseBuilder.setHeaders(headers)
             responseBuilder.setStatusCode(HttpStatus.Created)
             responseBuilder.build()
-        } else if (validContentType(request) && !validBody(request)) {
+        } else if (validContentType(request) && (!validBody(request) || !toDoList.addTask(requestBody))) {
             BadRequestError().handleError(responseBuilder)
         } else {
             UnsupportedMediaError().handleError(responseBuilder)
