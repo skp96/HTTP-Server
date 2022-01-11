@@ -10,7 +10,7 @@ class ToDoList(private val filePath: String, private val fileIo: FileInterface, 
         lateinit var taskData: String
         try{
             taskData = retrieveTaskData(requestBody)
-        }catch (e: NoSuchElementException) {
+        }catch (e: Exception) {
             return false
         }
         val taskId = calculateId()

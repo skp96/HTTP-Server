@@ -13,15 +13,17 @@ class CreateToDoAction(private val toDoList: ToDoList): Action {
     private lateinit var requestBody: String
 
     override fun act(responseBuilder: ResponseBuilder, request: Request): String {
-        return if (validContentType(request) && validBody(request) && toDoList.addTask(requestBody)) {
+        val isTaskAdded = toDoList.addTask(requestBody)
+
+        return if (!validContentType(request)) {
+            return UnsupportedMediaError().handleError(responseBuilder)
+        } else if (validBody(request) && isTaskAdded) {
             responseBuilder.setBody(requestBody)
             responseBuilder.setHeaders(headers)
             responseBuilder.setStatusCode(HttpStatus.Created)
             responseBuilder.build()
-        } else if (validContentType(request) && (!validBody(request) || !toDoList.addTask(requestBody))) {
-            BadRequestError().handleError(responseBuilder)
         } else {
-            UnsupportedMediaError().handleError(responseBuilder)
+            BadRequestError().handleError(responseBuilder)
         }
     }
 
