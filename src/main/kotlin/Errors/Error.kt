@@ -1,6 +1,6 @@
-package HttpServerErrors
+package Errors
 import response.ResponseBuilder
 
-interface HttpServerError {
+interface Error {
     fun handleError(responseBuilder: ResponseBuilder): String
 }

@@ -6,12 +6,18 @@ import java.io.FileNotFoundException
 
 class ToDoList(private val filePath: String, private val fileIo: FileInterface, private val jsonGenerator: JsonGenerator) {
 
-    fun addTask(task: Task): String {
+    fun addTask(requestBody: String): Boolean {
+        lateinit var taskData: String
+        try{
+            taskData = retrieveTaskData(requestBody)
+        }catch (e: Exception) {
+            return false
+        }
         val taskId = calculateId()
-        task.setId(taskId)
+        val task = Task(taskId, taskData)
         val jsonTask = jsonGenerator.resourceToJson(task)
         fileIo.writeResource(filePath, jsonTask)
-        return task.body
+        return true
     }
 
     fun retrieveList(): List<String> {
@@ -30,5 +36,10 @@ class ToDoList(private val filePath: String, private val fileIo: FileInterface, 
         } else {
             listOfTasks.size
         }
+    }
+
+    private fun retrieveTaskData(jsonString: String): String {
+        val obj = jsonGenerator.resourceFromJson(jsonString, mutableMapOf<String, String>()::class)
+        return obj.getValue("task")
     }
 }

@@ -3,6 +3,7 @@ package Actions
 import Utilities.FileIo
 import httpstatus.HttpStatus
 import mocks.HTTPResponseBuilderMock
+import request.Request
 import kotlin.test.*
 
 internal class GetHtmlHealthCheckActionTest {
@@ -11,8 +12,8 @@ internal class GetHtmlHealthCheckActionTest {
         val fileIo = FileIo()
         val action = GetHtmlHealthCheckAction(fileIo)
         val responseBuilder = HTTPResponseBuilderMock()
-
-        action.act(responseBuilder)
+        val request = Request("GET", "/health-check.html")
+        action.act(responseBuilder, request)
 
         val expectedBody = "<!doctype>\n" +
                 "<html lang=\"en-US\">\n" +

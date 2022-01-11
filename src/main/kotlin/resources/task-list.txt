@@ -1,2 +1,3 @@
-{"body":"{\"task\":\"a new task\"}","id":1}
-{"body":"{\"task\":\"a new task\"}","id":2}
+{"id":1,"body":"a new task"}
+{"id":2,"body":"a new task"}
+{"id":3,"body":"a new task"}
