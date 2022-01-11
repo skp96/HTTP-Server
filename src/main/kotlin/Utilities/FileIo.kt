@@ -19,4 +19,8 @@ class FileIo : FileInterface {
         }
         file.appendText(resource + "\n")
     }
+
+    override fun readFile(fileName: String): String {
+        return javaClass.classLoader.getResource(fileName).readText(Charsets.UTF_8)
+    }
 }
