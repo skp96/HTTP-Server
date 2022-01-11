@@ -12,4 +12,8 @@ class FileIoMock : FileInterface {
     override fun writeResource(filePath: String, resource: String) {
         file += (resource + "\n")
     }
+
+    override fun readFile(fileName: String): String {
+        return javaClass.classLoader.getResource(fileName).readText(Charsets.UTF_8)
+    }
 }
