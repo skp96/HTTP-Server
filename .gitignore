@@ -18,3 +18,4 @@ gradle-app.setting
 *.iml
 
 *.DS_Store
+src/main/kotlin/resources/task-list.txt

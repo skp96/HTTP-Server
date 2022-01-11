@@ -1,14 +1,16 @@
 package Utilities
 
-import org.json.JSONObject
+import com.google.gson.Gson
+import kotlin.reflect.KClass
 
 class JsonGenerator {
-    private val jsonObj = JSONObject()
+    private val gson = Gson()
 
-    fun generateJsonString(mapOfKeysToValues: Map<String, Any>): String {
-        for (entries in mapOfKeysToValues) {
-            jsonObj.put(entries.key, entries.value)
-        }
-        return jsonObj.toString()
+    fun resourceToJson(resource: Any): String {
+        return gson.toJson(resource)
+    }
+
+    fun <T: Any> resourceFromJson(resource: String, obj: KClass<T>): T {
+        return gson.fromJson(resource, obj.java)
     }
 }

@@ -1,6 +1,7 @@
 package Actions
 
 import contenttype.HttpContentTypes
+import request.Request
 import response.ResponseBuilder
 
 class GetHTMLResponseAction : Action {
@@ -9,7 +10,7 @@ class GetHTMLResponseAction : Action {
     private lateinit var requestBody: String
 
 
-    override fun act(responseBuilder: ResponseBuilder): String {
+    override fun act(responseBuilder: ResponseBuilder, request: Request): String {
         responseBuilder.setHeaders(headers)
         responseBuilder.setBody(responseBody)
         return responseBuilder.build()

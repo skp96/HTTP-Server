@@ -1,9 +1,8 @@
-package HttpServerErrors
+package Errors
 
 import httpstatus.HttpStatus
 import mocks.HTTPResponseBuilderMock
 import kotlin.test.*
-import HttpServerErrors.InternalServerError
 
 class InternalServerErrorTest {
     @Test

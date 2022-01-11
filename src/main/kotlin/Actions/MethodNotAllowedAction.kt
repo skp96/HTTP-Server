@@ -1,13 +1,14 @@
 package Actions
 import response.HttpResponseBuilder
 import httpstatus.HttpStatus
+import request.Request
 import response.ResponseBuilder
 
 class MethodNotAllowedAction(private val allowedMethods: MutableSet<String>) : Action {
     private val statusCode = HttpStatus.MethodNotAllowed
     private lateinit var requestBody: String
 
-    override fun act(responseBuilder: ResponseBuilder): String {
+    override fun act(responseBuilder: ResponseBuilder, request: Request): String {
         val headers = generateAllowHeader()
         responseBuilder.setStatusCode(statusCode)
         responseBuilder.setHeaders(headers)

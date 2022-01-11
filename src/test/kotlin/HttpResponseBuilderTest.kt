@@ -2,7 +2,6 @@ import contenttype.HttpContentTypes
 import kotlin.test.*
 import response.HttpResponseBuilder
 import httpstatus.HttpStatus
-import org.json.JSONObject
 
 class HttpResponseBuilderTest {
     @Test
@@ -80,10 +79,8 @@ class HttpResponseBuilderTest {
     fun `given json_response build response`() {
         val httpResponseBuilder = HttpResponseBuilder()
         httpResponseBuilder.setHeaders(mapOf("Content-Type" to (HttpContentTypes.JSON.type + HttpContentTypes.JSON.parameter)))
-        val expectedJsonBody = JSONObject()
-        expectedJsonBody.put("key1", "value1")
-        expectedJsonBody.put("key2", "value2")
-        httpResponseBuilder.setBody(expectedJsonBody.toString())
+        val expectedJsonBody = """{"key1":"value1","key2":"value2"}"""
+        httpResponseBuilder.setBody(expectedJsonBody)
         val expectation = "HTTP/1.1 200 OK\r\nContent-Type: application/json;charset=utf-8\r\nContent-Length: 33\r\n\r\n{\"key1\":\"value1\",\"key2\":\"value2\"}"
         assertEquals(expectation, httpResponseBuilder.build())
     }
@@ -125,6 +122,17 @@ class HttpResponseBuilderTest {
         val responseBody = "<note><body>XML Response</body></note>"
         httpResponseBuilder.setBody(responseBody)
         val expectedResult = "HTTP/1.1 200 OK\r\nContent-Type: application/xml;charset=utf-8\r\nContent-Length: 38\r\n\r\n${responseBody}"
+        assertEquals(expectedResult, httpResponseBuilder.build())
+    }
+
+    @Test
+    fun `given to-do request build response`() {
+        val httpResponseBuilder = HttpResponseBuilder()
+        httpResponseBuilder.setStatusCode(HttpStatus.Created)
+        httpResponseBuilder.setHeaders(mapOf("Content-Type" to (HttpContentTypes.JSON.type + HttpContentTypes.JSON.parameter)))
+        val responseBody = """{"task":"a new task"}"""
+        httpResponseBuilder.setBody(responseBody)
+        val expectedResult = "HTTP/1.1 201 Created\r\nContent-Type: application/json;charset=utf-8\r\nContent-Length: 21\r\n\r\n${responseBody}"
         assertEquals(expectedResult, httpResponseBuilder.build())
     }
 }
