@@ -43,4 +43,13 @@ class FileIoTest {
         val fileIo = FileIo()
         assertFailsWith<NullPointerException> { fileIo.readFile("static-no-file.csv") }
     }
+
+    @Test
+    fun `clear file returns an empty file`() {
+        val fileIo = FileIo()
+        val path = "src/test/kotlin/resources/clear-file.txt"
+        fileIo.clearFile(path)
+        val expectedResult = ""
+        assertEquals(expectedResult, fileIo.readResource(path))
+    }
 }

@@ -35,6 +35,7 @@ fun main() {
     router.addRoute("GET", "/health-check.html", GetHtmlHealthCheckAction(fileIo))
     router.addRoute("GET", "/xml_response", GetXmlResponseAction())
     router.addRoute("POST", "/todo", CreateToDoAction(todoList))
+    router.addRoute("PUT", "/todo/[0-9]+", UpdateToDoAction(todoList))
 
     println("Server is running on port ${serverSocket.localPort}")
     Server(serverSocket, parser, responseBuilder, router, serverError).start()

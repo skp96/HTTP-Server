@@ -135,4 +135,14 @@ class HttpResponseBuilderTest {
         val expectedResult = "HTTP/1.1 201 Created\r\nContent-Type: application/json;charset=utf-8\r\nContent-Length: 21\r\n\r\n${responseBody}"
         assertEquals(expectedResult, httpResponseBuilder.build())
     }
+
+    @Test
+    fun `given todo-1 request build response`() {
+        val httpResponseBuilder = HttpResponseBuilder()
+        httpResponseBuilder.setHeaders(mapOf("Content-Type" to (HttpContentTypes.JSON.type + HttpContentTypes.JSON.parameter)))
+        val responseBody = """{"task":"an updated task"}"""
+        httpResponseBuilder.setBody(responseBody)
+        val expectedResult = "HTTP/1.1 200 OK\r\nContent-Type: application/json;charset=utf-8\r\nContent-Length: 26\r\n\r\n${responseBody}"
+        assertEquals(expectedResult, httpResponseBuilder.build())
+    }
 }

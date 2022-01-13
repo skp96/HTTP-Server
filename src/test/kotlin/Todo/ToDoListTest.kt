@@ -29,8 +29,32 @@ class ToDoListTest {
         toDoList.addTask(task1)
         toDoList.addTask(task2)
 
-        val result = toDoList.retrieveList()
-        val expectedResult = listOf("""{"id":1,"body":"test body1"}""", """{"id":2,"body":"test body2"}""", "")
-        assertEquals(expectedResult, result)
+        val expectedResult = toDoList.retrieveList()
+        assertContentEquals(expectedResult, listOf(Task(1, "test body1"), Task(2, "test body2")))
+    }
+
+    @Test
+    fun `expect updateTask to return true upon updating a task`() {
+        val originalRequestBody = """{"task": "test body"}"""
+        toDoList.addTask(originalRequestBody)
+
+        val taskIdForUpdate = 1
+        val newRequestBody = """{"task": "new test body"}"""
+        val result = toDoList.updateTask(taskIdForUpdate, newRequestBody)
+        val list = fileIo.readResource(filePath)
+        val expectedTask = """{"id":1,"body":"new test body"}"""
+        assertEquals(true, list.contains(expectedTask))
+        assertEquals(true, result)
+    }
+
+    @Test
+    fun `expect updateTask to create task if task does not exist`() {
+        val taskIdForUpdate = 2
+        val newRequestBody = """{"task": "new test body"}"""
+        val result = toDoList.updateTask(taskIdForUpdate, newRequestBody)
+        val list = fileIo.readResource(filePath)
+        val expectedTask = """{"id":2,"body":"new test body"}"""
+        assertEquals(true, list.contains(expectedTask))
+        assertEquals(true, result)
     }
 }
