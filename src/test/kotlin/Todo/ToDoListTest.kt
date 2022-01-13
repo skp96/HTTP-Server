@@ -46,4 +46,15 @@ class ToDoListTest {
         assertEquals(true, list.contains(expectedTask))
         assertEquals(true, result)
     }
+
+    @Test
+    fun `expect updateTask to create task if task does not exist`() {
+        val taskIdForUpdate = 2
+        val newRequestBody = """{"task": "new test body"}"""
+        val result = toDoList.updateTask(taskIdForUpdate, newRequestBody)
+        val list = fileIo.readResource(filePath)
+        val expectedTask = """{"id":2,"body":"new test body"}"""
+        assertEquals(true, list.contains(expectedTask))
+        assertEquals(true, result)
+    }
 }

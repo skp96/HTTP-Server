@@ -6,14 +6,14 @@ import java.io.FileNotFoundException
 
 class ToDoList(private val filePath: String, private val fileIo: FileInterface, private val jsonGenerator: JsonGenerator) {
 
-    fun addTask(requestBody: String): Boolean {
+    fun addTask(requestBody: String, id: Int = 0): Boolean {
         lateinit var taskData: String
         try{
             taskData = retrieveTaskData(requestBody)
         }catch (e: Exception) {
             return false
         }
-        val taskId = calculateId()
+        val taskId = if (id == 0) calculateId() else id
         val task = Task(taskId, taskData)
         val jsonTask = jsonGenerator.resourceToJson(task)
         fileIo.writeResource(filePath, jsonTask)
@@ -25,7 +25,7 @@ class ToDoList(private val filePath: String, private val fileIo: FileInterface, 
         return try {
             taskData = retrieveTaskData(requestBody)
             val listOfTasks = retrieveList().toMutableList()
-            val taskToUpdate = listOfTasks[id - 1]
+            val taskToUpdate = locateTask(id, listOfTasks) ?: return addTask(requestBody, id)
             taskToUpdate.setTaskBody(taskData)
             fileIo.clearFile(filePath)
             for (task in listOfTasks) {
@@ -60,5 +60,9 @@ class ToDoList(private val filePath: String, private val fileIo: FileInterface, 
     private fun retrieveTaskData(jsonString: String): String {
         val obj = jsonGenerator.resourceFromJson(jsonString, mutableMapOf<String, String>()::class)
         return obj.getValue("task")
+    }
+
+    private fun locateTask(id: Int, tasks: MutableList<Task>): Task? {
+        return tasks.firstOrNull {it.id == id}
     }
 }
