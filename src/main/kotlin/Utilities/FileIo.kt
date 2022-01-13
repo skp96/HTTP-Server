@@ -28,7 +28,6 @@ class FileIo : FileInterface {
         val path = Paths.get(filePath)
         val file = File(path.toUri())
         val fileWriter = PrintWriter(file)
-        fileWriter.println("")
         fileWriter.close()
     }
 }

@@ -49,7 +49,7 @@ class FileIoTest {
         val fileIo = FileIo()
         val path = "src/test/kotlin/resources/clear-file.txt"
         fileIo.clearFile(path)
-        val expectedResult = "\n"
+        val expectedResult = ""
         assertEquals(expectedResult, fileIo.readResource(path))
     }
 }

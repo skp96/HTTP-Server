@@ -15,10 +15,21 @@ class Router() {
 
     fun routeRequest(request: Request): Action {
         val httpMethod = request.httpMethod
-        val route = request.route
-        val resourceRoutes = routes.get(route) ?: return NotFoundAction()
+        val requestPath = request.route // todo/1
+        val setOfPaths = routes.keys
+        val path = locatePath(requestPath, setOfPaths)
+        val resourceRoutes = routes.get(path) ?: return NotFoundAction()
         val controller = resourceRoutes.get(httpMethod) ?: return MethodNotAllowedAction(resourceRoutes.keys)
         controller.setBody(request.body)
         return controller
+    }
+
+    private fun locatePath(requestPath: String, setOfPaths: MutableSet<String>): String {
+        for (path in setOfPaths) {
+            if (requestPath.matches(path.toRegex())) {
+                return path
+            }
+        }
+        return "null"
     }
 }

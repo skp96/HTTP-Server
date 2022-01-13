@@ -263,4 +263,31 @@ class RouterTest {
         assertIs<CreateToDoAction>(action)
     }
 
+    @Test
+    fun `expect addRoute to add PUT method and UpdateToDoAction to to-do-id route`() {
+        val fileIo = FileIoMock()
+        val jsonGenerator = JsonGenerator()
+        val filePath = "src/test/kotlin/resources/test-task-list.txt"
+        val toDoList = ToDoList(filePath, fileIo, jsonGenerator)
+        val updateToDoAction = UpdateToDoAction(toDoList)
+
+        router.addRoute("PUT", "/todo/[0-9]+", updateToDoAction)
+        val expectation: MutableMap<String, MutableMap<String, Action>> = mutableMapOf("/todo/[0-9]+" to mutableMapOf("PUT" to updateToDoAction))
+        assertEquals(expectation, router.routes)
+    }
+
+    @Test
+    fun `expect routeRequest to return UpdateToDoAction from to-do-id route when http method is PUT`() {
+        val fileIo = FileIoMock()
+        val jsonGenerator = JsonGenerator()
+        val filePath = "src/test/kotlin/resources/test-task-list.txt"
+        val toDoList = ToDoList(filePath, fileIo, jsonGenerator)
+        val updateToDoAction = UpdateToDoAction(toDoList)
+
+        router.addRoute("PUT", "/todo/[0-9]+", updateToDoAction)
+        val request = Request("PUT", "/todo/1")
+        val action = router.routeRequest(request)
+        assertIs<UpdateToDoAction>(action)
+    }
+
 }

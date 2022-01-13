@@ -1,12 +1,2 @@
-{"id":1,"body":"a new task"}
+{"id":1,"body":"an updated task"}
 {"id":2,"body":"a new task"}
-{"id":3,"body":"a new task"}
-{"id":4,"body":"a new task"}
-{"id":5,"body":"a new task"}
-{"id":6,"body":"a new task"}
-{"id":7,"body":"a new task"}
-{"id":8,"body":"a new task"}
-{"id":9,"body":"a new task"}
-{"id":10,"body":"a new task"}
-{"id":11,"body":"a new task"}
-{"id":12,"body":"a new task"}
