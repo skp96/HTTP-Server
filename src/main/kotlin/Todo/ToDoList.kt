@@ -20,10 +20,29 @@ class ToDoList(private val filePath: String, private val fileIo: FileInterface, 
         return true
     }
 
-    fun retrieveList(): List<String> {
+    fun updateTask(id: Int, requestBody: String): Boolean {
+        lateinit var taskData: String
         return try {
-            val tasks = fileIo.readResource(filePath)
-            tasks.split("\n").toList()
+            taskData = retrieveTaskData(requestBody)
+            val listOfTasks = retrieveList().toMutableList()
+            val taskToUpdate = listOfTasks[id - 1]
+            taskToUpdate.setTaskBody(taskData)
+            fileIo.clearFile(filePath)
+            for (task in listOfTasks) {
+                val taskToJson = jsonGenerator.resourceToJson(task)
+                fileIo.writeResource(filePath, taskToJson)
+            }
+            true
+        }catch (e: Exception) {
+            false
+        }
+    }
+
+    fun retrieveList(): List<Task> {
+        return try {
+            val tasksOnFile = fileIo.readResource(filePath)
+            val listOfTasks = tasksOnFile.split("\n").toList().dropLast(1)
+            listOfTasks.map { jsonGenerator.resourceFromJson(it, Task::class) }
         }catch (e: FileNotFoundException) {
             listOf()
         }
@@ -34,7 +53,7 @@ class ToDoList(private val filePath: String, private val fileIo: FileInterface, 
         return if (listOfTasks.isEmpty()) {
             1
         } else {
-            listOfTasks.size
+            listOfTasks.size + 1
         }
     }
 
